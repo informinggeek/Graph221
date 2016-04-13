@@ -5,7 +5,7 @@
 #include <iostream>
 #include <list>
 #include <utility>
-
+#include <map>
 
 ////////////////////////////////////////////////////////////////////////////////
 /// A generic adjacency-list graph where each vertex stores a VertexProperty and
@@ -33,7 +33,8 @@ class graph {
     ///@todo Choose a container for the vertices. It should contain "vertex*" or
     ///      shared_ptr<vertex>.
     /// example:
-    typedef std::list<vertex*> MyVertexContainer;
+//    typedef std::list<vertex*> MyVertexContainer;
+    typedef std::map<vertex_descriptor, vertex*> MyVertexContainer;		// implemented using a map so the vertexes can be found by their descriptors
 
     ///@todo Choose a container for the edges. It should contain "edge*" or
     ///      shared_ptr<edge>.
@@ -57,6 +58,13 @@ class graph {
     typedef typename MyAdjEdgeContainer::iterator adj_edge_iterator;
     typedef typename MyAdjEdgeContainer::const_iterator const_adj_edge_iterator;
 
+
+    // Defined containers
+    MyVertexContainer verticies;			// container for verticies
+    MyEdgeContainer edges;				// container for edges
+
+
+
     // Required graph operations
 
     ///@todo Define constructor/destructor
@@ -67,16 +75,16 @@ class graph {
     graph& operator=(const graph&) = delete;  ///< Copy is disabled.
 
     ///@todo Define vertex iterator operations
-    vertex_iterator vertices_begin();
-    const_vertex_iterator vertices_cbegin() const;
-    vertex_iterator vertices_end();
-    const_vertex_iterator vertices_cend() const;
+    vertex_iterator vertices_begin() {return verticies.begin();}
+    const_vertex_iterator vertices_cbegin() const {return verticies.cbegin();}
+    vertex_iterator vertices_end() {return verticies.end();}
+    const_vertex_iterator vertices_cend() const {return verticies.cend();}
 
     ///@todo Define edge iterator operations
-    edge_iterator edges_begin();
-    const_edge_iterator edges_cbegin() const;
-    edge_iterator edges_end();
-    const_edge_iterator edges_cend() const;
+    edge_iterator edges_begin() {return edges.begin();}
+    const_edge_iterator edges_cbegin() const {return edges.cbegin();}
+    edge_iterator edges_end() {return edges.end();}
+    const_edge_iterator edges_cend() const {return edges.cend();}
 
     ///@todo Define accessors
     size_t num_vertices() const;
@@ -101,6 +109,7 @@ class graph {
     friend std::istream& operator>>(std::istream&, graph<V, E>&);
     template<typename V, typename E>
     friend std::ostream& operator<<(std::ostream&, const graph<V, E>&);
+
 
   private:
 
