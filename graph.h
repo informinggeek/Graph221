@@ -135,22 +135,40 @@ class graph {
       public:
 
         ///@todo Define constructor
-        vertex(vertex_descriptor vd, const VertexProperty& v);
+        vertex(vertex_descriptor vd, const VertexProperty& v) : desc(vd), prop(v) {}
 
         ///@todo Define iterator operations
-        adj_edge_iterator begin();
-        const_adj_edge_iterator cbegin() const;
-        adj_edge_iterator end();
-        const_adj_edge_iterator cend() const;
+        adj_edge_iterator begin() {
+            return incident_edges.begin();
+        }
+        const_adj_edge_iterator cbegin() const {
+            return incident_edges.cbegin();
+        }
+        adj_edge_iterator end() {
+            return incident_edges.end();
+        }
+        const_adj_edge_iterator cend() const {
+            return incident_edges.cend();
+        }
 
         ///@todo Define accessor operations
-        const vertex_descriptor descriptor() const;
-        VertexProperty& property();
-        const VertexProperty& property() const;
+        const vertex_descriptor descriptor() const {
+            return desc;
+        }
+        VertexProperty& property() {
+            return prop;
+        }
+        const VertexProperty& property() const {
+            return prop;
+        }
 
       private:
 
         ///@todo Specify the internal state of a vertex.
+
+        vertex_descriptor desc;
+        VertexProperty prop;
+        MyEdgeContainer incident_edges;
     };
 
 
