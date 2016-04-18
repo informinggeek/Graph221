@@ -61,7 +61,7 @@ class graph {
 
 
     // Defined containers
-    MyVertexContainer verticies;			// container for verticies
+    MyVertexContainer vertices;			// container for vertices
     MyEdgeContainer edges;				// container for edges
 
 
@@ -76,10 +76,10 @@ class graph {
     graph& operator=(const graph&) = delete;  ///< Copy is disabled.
 
     ///@todo Define vertex iterator operations
-    vertex_iterator vertices_begin() {return verticies.begin();}
-    const_vertex_iterator vertices_cbegin() const {return verticies.cbegin();}
-    vertex_iterator vertices_end() {return verticies.end();}
-    const_vertex_iterator vertices_cend() const {return verticies.cend();}
+    vertex_iterator vertices_begin() {return vertices.begin();}
+    const_vertex_iterator vertices_cbegin() const {return vertices.cbegin();}
+    vertex_iterator vertices_end() {return vertices.end();}
+    const_vertex_iterator vertices_cend() const {return vertices.cend();}
 
     ///@todo Define edge iterator operations
     edge_iterator edges_begin() {return edges.begin();}
@@ -91,10 +91,10 @@ class graph {
     size_t num_vertices() const;
     size_t num_edges() const;
     vertex_iterator find_vertex(vertex_descriptor vd) {
-        return find(verticies.begin(), verticies.end(), vd);
+        return find(vertices.begin(), vertices.end(), vd);
     }
     const_vertex_iterator find_vertex(vertex_descriptor vd) const {
-        return find(verticies.cbegin(), verticies.cend(), vd);
+        return find(vertices.cbegin(), vertices.cend(), vd);
     }
     edge_iterator find_edge(edge_descriptor ed) {
         return find(edges.begin(), edges.end(), ed);
