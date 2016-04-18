@@ -183,18 +183,33 @@ class graph {
       public:
 
         ///@todo Define constructor
-        edge(vertex_descriptor, vertex_descriptor, const EdgeProperty&);
+        edge(vertex_descriptor s, vertex_descriptor t, const EdgeProperty& p) :
+            source(s), target(t), prop(p) {}
 
         ///@todo Define accessor operations
-        const vertex_descriptor source() const;
-        const vertex_descriptor target() const;
-        const edge_descriptor descriptor() const;
-        EdgeProperty& property();
-        const EdgeProperty& property() const;
+        const vertex_descriptor source() const {
+            return source;
+        }
+        const vertex_descriptor target() const {
+            return target;
+        }
+        const edge_descriptor descriptor() const {
+            return desc;
+        }
+        EdgeProperty& property() {
+            return prop;
+        }
+        const EdgeProperty& property() const {
+            return prop;
+        }
 
       private:
 
         ///@todo Specify the internal state of an edge.
+        vertex_descriptor source;
+        vertex_descriptor target;
+        edge_descriptor desc;
+        EdgeProperty prop;
     };
 
 };
