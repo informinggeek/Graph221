@@ -34,8 +34,10 @@ class graph {
     ///@todo Choose a container for the vertices. It should contain "vertex*" or
     ///      shared_ptr<vertex>.
     /// example:
-//    typedef std::list<vertex*> MyVertexContainer;
-    typedef std::map<vertex_descriptor, vertex*> MyVertexContainer;		// implemented using a map so the vertexes can be found by their descriptors
+    //    typedef std::list<vertex*> MyVertexContainer;
+
+    // implemented using a map so the vertexes can be found by their descriptors
+    typedef std::map<vertex_descriptor, vertex*> MyVertexContainer;
 
     ///@todo Choose a container for the edges. It should contain "edge*" or
     ///      shared_ptr<edge>.
