@@ -6,6 +6,7 @@
 #include <list>
 #include <utility>
 #include <map>
+#include <algorithm>
 
 ////////////////////////////////////////////////////////////////////////////////
 /// A generic adjacency-list graph where each vertex stores a VertexProperty and
@@ -89,10 +90,18 @@ class graph {
     ///@todo Define accessors
     size_t num_vertices() const;
     size_t num_edges() const;
-    vertex_iterator find_vertex(vertex_descriptor);
-    const_vertex_iterator find_vertex(vertex_descriptor) const;
-    edge_iterator find_edge(edge_descriptor);
-    const_edge_iterator find_edge(edge_descriptor) const;
+    vertex_iterator find_vertex(vertex_descriptor vd) {
+        return find(verticies.begin(), verticies.end(), vd);
+    }
+    const_vertex_iterator find_vertex(vertex_descriptor vd) const {
+        return find(verticies.cbegin(), verticies.cend(), vd);
+    }
+    edge_iterator find_edge(edge_descriptor ed) {
+        return find(edges.begin(), edges.end(), ed);
+    }
+    const_edge_iterator find_edge(edge_descriptor ed) const {
+        return find(edges.cbegin(), edges.cend(), ed);
+    }
 
     ///@todo Define modifiers
     vertex_descriptor insert_vertex(const VertexProperty&);
