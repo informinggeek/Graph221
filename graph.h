@@ -117,9 +117,14 @@ class graph {
     edge_descriptor insert_edge(vertex_descriptor v1, vertex_descriptor v2,
         const EdgeProperty& ep) {
         edge_descriptor ed = edge_descriptor(v1, v2);
-	vertex_iterator v = find_vertex(v1);
-	v->
-        edges.push_back(new edge(v1, v2, ep));
+	edge* e = new edge(v1,v2,ep);
+	vertex_iterator va = find_vertex(v1);
+	vertex_iterator vb = find_vertex(v2);
+	if(va == vertices.end()) v1 = insert_vertex(v1);
+	if(vb == vertices.end()) v2 = insert_vertex(v2);
+	v1->adj_edge.push_back(e);
+	v2->adj_edge.push_back(e);
+        edges.push_back(e);
         return ed;
     }
     void insert_edge_undirected(vertex_descriptor v1, vertex_descriptor v2,
@@ -180,13 +185,13 @@ class graph {
             return prop;
         }
 
+        MyAdjEdgeContainer adj_edge;
       private:
 
         ///@todo Specify the internal state of a vertex.
 
         vertex_descriptor desc;
         VertexProperty prop;
-        MyEdgeContainer adj_edge;
     };
 
     class vertex_counter {
