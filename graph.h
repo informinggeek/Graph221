@@ -69,7 +69,6 @@ class graph {
     vertex_counter counter;
 
 
-
     // Required graph operations
 
     ///@todo Define constructor/destructor
@@ -118,7 +117,9 @@ class graph {
     edge_descriptor insert_edge(vertex_descriptor v1, vertex_descriptor v2,
         const EdgeProperty& ep) {
         edge_descriptor ed = edge_descriptor(v1, v2);
-        edges[ed] = new edge(v1, v2, ep);
+	vertex_iterator v = find_vertex(v1);
+	v->
+        edges.push_back(new edge(v1, v2, ep));
         return ed;
     }
     void insert_edge_undirected(vertex_descriptor v1, vertex_descriptor v2,
