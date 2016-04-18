@@ -156,16 +156,16 @@ class graph {
 
         ///@todo Define iterator operations
         adj_edge_iterator begin() {
-            return incident_edges.begin();
+            return adj_edge.begin();
         }
         const_adj_edge_iterator cbegin() const {
-            return incident_edges.cbegin();
+            return adj_edge.cbegin();
         }
         adj_edge_iterator end() {
-            return incident_edges.end();
+            return adj_edge.end();
         }
         const_adj_edge_iterator cend() const {
-            return incident_edges.cend();
+            return adj_edge.cend();
         }
 
         ///@todo Define accessor operations
@@ -185,7 +185,7 @@ class graph {
 
         vertex_descriptor desc;
         VertexProperty prop;
-        MyEdgeContainer incident_edges;
+        MyEdgeContainer adj_edge;
     };
 
     class vertex_counter {
