@@ -106,11 +106,22 @@ class graph {
     }
 
     ///@todo Define modifiers
-    vertex_descriptor insert_vertex(const VertexProperty&);
-    edge_descriptor insert_edge(vertex_descriptor, vertex_descriptor,
-        const EdgeProperty&);
-    void insert_edge_undirected(vertex_descriptor, vertex_descriptor,
-        const EdgeProperty&);
+    vertex_descriptor insert_vertex(const VertexProperty& vp) {
+        vertex_descriptor vd = 0; // Not sure how the descriptors are supposed to be assigned
+        vertices[vd] = new vertex(vd, vp);
+        return vd;
+    }
+    edge_descriptor insert_edge(vertex_descriptor v1, vertex_descriptor v2,
+        const EdgeProperty& ep) {
+        edge_descriptor ed = 0; // Not sure how the descriptors are supposed to be assigned
+        edges[ed] = new edge(v1, v2, ep);
+        return ed;
+    }
+    void insert_edge_undirected(vertex_descriptor v1, vertex_descriptor v2,
+        const EdgeProperty& ep) {
+        insert_edge(v1, v2, ep);
+        insert_edge(v2, v1, ep);
+    }
     void erase_vertex(vertex_descriptor);
     void erase_edge(edge_descriptor);
     void clear();
@@ -137,7 +148,7 @@ class graph {
       public:
 
         ///@todo Define constructor
-        vertex(vertex_descriptor vd, const VertexProperty& v) : desc(vd), prop(v) {}
+        vertex(vertex_descriptor vd, const VertexProperty& vp) : desc(vd), prop(vp) {}
 
         ///@todo Define iterator operations
         adj_edge_iterator begin() {
@@ -186,7 +197,7 @@ class graph {
 
         ///@todo Define constructor
         edge(vertex_descriptor s, vertex_descriptor t, const EdgeProperty& p) :
-            source(s), target(t), prop(p) {}
+            start(s), end(t), prop(p) {}
 
         ///@todo Define accessor operations
         const vertex_descriptor source() const {
@@ -208,8 +219,8 @@ class graph {
       private:
 
         ///@todo Specify the internal state of an edge.
-        vertex_descriptor source;
-        vertex_descriptor target;
+        vertex_descriptor start;
+        vertex_descriptor end;
         edge_descriptor desc;
         EdgeProperty prop;
     };
