@@ -219,7 +219,9 @@ class graph {
 
         ///@todo Define constructor
         edge(vertex_descriptor s, vertex_descriptor t, const EdgeProperty& p) :
-            start(s), end(t), prop(p) {}
+            start(s), end(t), prop(p) {
+                desc = edge_descriptor(s,t);
+            }
 
         ///@todo Define accessor operations
         const vertex_descriptor source() const {
