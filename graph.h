@@ -180,13 +180,14 @@ class graph {
             return prop;
         }
 
+        MyEdgeContainer adj_edge;
+
       private:
 
         ///@todo Specify the internal state of a vertex.
 
         vertex_descriptor desc;
         VertexProperty prop;
-        MyEdgeContainer adj_edge;
     };
 
     class vertex_counter {
