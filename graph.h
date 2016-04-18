@@ -20,6 +20,7 @@ class graph {
   // afterward.
   class vertex;
   class edge;
+  class vertex_counter;
 
   public:
 
@@ -65,13 +66,16 @@ class graph {
     // Defined containers
     MyVertexContainer vertices;			// container for vertices
     MyEdgeContainer edges;				// container for edges
+    vertex_counter counter;
 
 
 
     // Required graph operations
 
     ///@todo Define constructor/destructor
-    graph() = default;
+    graph() {
+        counter = vertex_counter();
+    }
     ~graph() = default;
 
     graph(const graph&) = delete;             ///< Copy is disabled.
@@ -107,13 +111,13 @@ class graph {
 
     ///@todo Define modifiers
     vertex_descriptor insert_vertex(const VertexProperty& vp) {
-        vertex_descriptor vd = 0; // Not sure how the descriptors are supposed to be assigned
+        vertex_descriptor vd = counter.next();
         vertices[vd] = new vertex(vd, vp);
         return vd;
     }
     edge_descriptor insert_edge(vertex_descriptor v1, vertex_descriptor v2,
         const EdgeProperty& ep) {
-        edge_descriptor ed = 0; // Not sure how the descriptors are supposed to be assigned
+        edge_descriptor ed = edge_descriptor(v1, v2);
         edges[ed] = new edge(v1, v2, ep);
         return ed;
     }
@@ -182,6 +186,23 @@ class graph {
         vertex_descriptor desc;
         VertexProperty prop;
         MyEdgeContainer incident_edges;
+    };
+
+    class vertex_counter {
+
+        public:
+
+            vertex_counter(vertex_descriptor start = 0) : counter(start) {}
+
+            vertex_descriptor next() {
+                vertex_descriptor c = counter;
+                ++counter;
+                return c;
+            }
+
+
+        private:
+            vertex_descriptor counter;
     };
 
 
