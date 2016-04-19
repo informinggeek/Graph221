@@ -96,16 +96,29 @@ class graph {
     size_t num_vertices() const;
     size_t num_edges() const;
     vertex_iterator find_vertex(vertex_descriptor vd) {
-        return find(vertices.begin(), vertices.end(), vd);
+	vertex_iterator v = vertices.find(vd);		// uses the map's member function find() to search for the desired vertex
+        return v;
     }
     const_vertex_iterator find_vertex(vertex_descriptor vd) const {
-        return find(vertices.cbegin(), vertices.cend(), vd);
+	const_vertex_iterator v = vertices.find(vd);
+	return v;
     }
     edge_iterator find_edge(edge_descriptor ed) {
-        return find(edges.begin(), edges.end(), ed);
+	edge_iterator e = edges.begin();
+	while(e != edges.end() || ((*e)->descriptor().first == ed.first && (*e)->descriptor().second == ed.second))
+						// uses double dereference because iterators are pointing to edge pointers
+	{
+		e++;
+	}
+	return e;
     }
     const_edge_iterator find_edge(edge_descriptor ed) const {
-        return find(edges.cbegin(), edges.cend(), ed);
+	const_edge_iterator e = edges.begin();
+	while(e != edges.end() || ((*e)->descriptor().first == ed.first && (*e)->descriptor().second == ed.second))
+	{
+		e++;
+	}
+	return e;
     }
 
     ///@todo Define modifiers
@@ -120,10 +133,10 @@ class graph {
 	edge* e = new edge(v1,v2,ep);
 	vertex_iterator va = find_vertex(v1);
 	vertex_iterator vb = find_vertex(v2);
-	if(va == vertices.end()) v1 = insert_vertex(v1);
-	if(vb == vertices.end()) v2 = insert_vertex(v2);
-	v1->adj_edge.push_back(e);
-	v2->adj_edge.push_back(e);
+	if(va == vertices.end()) {v1 = insert_vertex(v1); va = find_vertex(v1);}
+	if(vb == vertices.end()) {v2 = insert_vertex(v2); vb = find_vertex(v2);}
+	va->second->adj_edge.push_back(e);
+	vb->second->adj_edge.push_back(e);
         edges.push_back(e);
         return ed;
     }
@@ -157,10 +170,8 @@ class graph {
 
       public:
 
-        ///@todo Define constructor
         vertex(vertex_descriptor vd, const VertexProperty& vp) : desc(vd), prop(vp) {}
 
-        ///@todo Define iterator operations
         adj_edge_iterator begin() {
             return adj_edge.begin();
         }
@@ -230,10 +241,10 @@ class graph {
 
         ///@todo Define accessor operations
         const vertex_descriptor source() const {
-            return source;
+            return start;
         }
         const vertex_descriptor target() const {
-            return target;
+            return end;
         }
         const edge_descriptor descriptor() const {
             return desc;
