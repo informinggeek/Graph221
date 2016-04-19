@@ -138,6 +138,7 @@ class graph {
 	va->second->adj_edge.push_back(e);
 	vb->second->adj_edge.push_back(e);
         edges.push_back(e);
+
         return ed;
     }
     void insert_edge_undirected(vertex_descriptor v1, vertex_descriptor v2,
@@ -197,6 +198,7 @@ class graph {
         }
 
         MyAdjEdgeContainer adj_edge;
+
       private:
 
         ///@todo Specify the internal state of a vertex.
