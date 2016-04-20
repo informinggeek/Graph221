@@ -43,12 +43,12 @@ class graph {
     ///@todo Choose a container for the edges. It should contain "edge*" or
     ///      shared_ptr<edge>.
     /// example:
-    typedef std::list<edge*> MyEdgeContainer;
+    typedef std::map<edge_descriptor, edge*> MyEdgeContainer;
 
     ///@todo Choose a container for the adjacency lists. It should contain
     ///      "edge*" or shared_ptr<edge>.
     /// example:
-    typedef std::list<edge*> MyAdjEdgeContainer;
+    typedef std::map<edge_descriptor, edge*> MyAdjEdgeContainer;
 
     // Vertex iterators
     typedef typename MyVertexContainer::iterator vertex_iterator;
@@ -108,19 +108,21 @@ class graph {
     }
 
     edge_iterator find_edge(edge_descriptor ed) {
-        edge_iterator e = edges.begin();
+        /*edge_iterator e = edges.begin();
         while(e != edges.end() || ((*e)->descriptor().first == ed.first && (*e)->descriptor().second == ed.second)) {
             // uses double dereference because iterators are pointing to edge pointers
             ++e;
-        }
+        }*/
+	edge_iterator e = edges.find(ed);
         return e;
     }
 
     const_edge_iterator find_edge(edge_descriptor ed) const {
-        const_edge_iterator e = edges.begin();
+        /*const_edge_iterator e = edges.begin();
         while(e != edges.end() || ((*e)->descriptor().first == ed.first && (*e)->descriptor().second == ed.second)) {
             ++e;
-        }
+        }*/
+	const_edge_iterator e = edges.find(ed);
         return e;
     }
 
@@ -134,18 +136,17 @@ class graph {
     edge_descriptor insert_edge(vertex_descriptor v1, vertex_descriptor v2,
                                 const EdgeProperty& ep) {
         edge_descriptor ed = edge_descriptor(v1, v2);
-        edge* e = new edge(v1,v2,ep);
-
         vertex_iterator va = find_vertex(v1);
         vertex_iterator vb = find_vertex(v2);
 
         if(va == vertices.end()) {v1 = insert_vertex(v1); va = find_vertex(v1);}
         if(vb == vertices.end()) {v2 = insert_vertex(v2); vb = find_vertex(v2);}
 
-        va->second->adj_edge.push_back(e);
-        vb->second->adj_edge.push_back(e);
+        edge* e = new edge(v1,v2,ep);
+	edges[ed] = e;
 
-        edges.push_back(e);
+        va->second->adj_edge[ed] = e;
+        vb->second->adj_edge[ed] = e;
 
         return ed;
     }
@@ -156,8 +157,12 @@ class graph {
         insert_edge(v2, v1, ep);
     }
 
-    void erase_vertex(vertex_descriptor);
-    void erase_edge(edge_descriptor);
+    void erase_vertex(vertex_descriptor v) {
+	
+    }
+    void erase_edge(edge_descriptor e) {
+	
+    }
     void clear();
 
     // Friend declarations for input/output.
