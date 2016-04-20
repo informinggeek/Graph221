@@ -64,8 +64,8 @@ class graph {
 
 
     // Defined containers
-    MyVertexContainer vertices;			// container for vertices
-    MyEdgeContainer edges;				// container for edges
+    MyVertexContainer vertices;         // container for vertices
+    MyEdgeContainer edges;              // container for edges
     vertex_counter counter;
 
 
@@ -75,6 +75,7 @@ class graph {
     graph() {
         counter = vertex_counter();
     }
+
     ~graph() = default;
 
     graph(const graph&) = delete;             ///< Copy is disabled.
@@ -95,30 +96,32 @@ class graph {
     ///@todo Define accessors
     size_t num_vertices() const;
     size_t num_edges() const;
+
     vertex_iterator find_vertex(vertex_descriptor vd) {
-	vertex_iterator v = vertices.find(vd);		// uses the map's member function find() to search for the desired vertex
+        vertex_iterator v = vertices.find(vd);       // uses the map's member function find() to search for the desired vertex
         return v;
     }
+
     const_vertex_iterator find_vertex(vertex_descriptor vd) const {
-	const_vertex_iterator v = vertices.find(vd);
-	return v;
+        const_vertex_iterator v = vertices.find(vd);
+        return v;
     }
+
     edge_iterator find_edge(edge_descriptor ed) {
-	edge_iterator e = edges.begin();
-	while(e != edges.end() || ((*e)->descriptor().first == ed.first && (*e)->descriptor().second == ed.second))
-						// uses double dereference because iterators are pointing to edge pointers
-	{
-		++e;
-	}
-	return e;
+        edge_iterator e = edges.begin();
+        while(e != edges.end() || ((*e)->descriptor().first == ed.first && (*e)->descriptor().second == ed.second)) {
+            // uses double dereference because iterators are pointing to edge pointers
+            ++e;
+        }
+        return e;
     }
+
     const_edge_iterator find_edge(edge_descriptor ed) const {
-	const_edge_iterator e = edges.begin();
-	while(e != edges.end() || ((*e)->descriptor().first == ed.first && (*e)->descriptor().second == ed.second))
-	{
-		++e;
-	}
-	return e;
+        const_edge_iterator e = edges.begin();
+        while(e != edges.end() || ((*e)->descriptor().first == ed.first && (*e)->descriptor().second == ed.second)) {
+            ++e;
+        }
+        return e;
     }
 
     ///@todo Define modifiers
@@ -127,25 +130,32 @@ class graph {
         vertices[vd] = new vertex(vd, vp);
         return vd;
     }
+
     edge_descriptor insert_edge(vertex_descriptor v1, vertex_descriptor v2,
-        const EdgeProperty& ep) {
+                                const EdgeProperty& ep) {
         edge_descriptor ed = edge_descriptor(v1, v2);
-	edge* e = new edge(v1,v2,ep);
-	vertex_iterator va = find_vertex(v1);
-	vertex_iterator vb = find_vertex(v2);
-	if(va == vertices.end()) {v1 = insert_vertex(v1); va = find_vertex(v1);}
-	if(vb == vertices.end()) {v2 = insert_vertex(v2); vb = find_vertex(v2);}
-	va->second->adj_edge.push_back(e);
-	vb->second->adj_edge.push_back(e);
+        edge* e = new edge(v1,v2,ep);
+
+        vertex_iterator va = find_vertex(v1);
+        vertex_iterator vb = find_vertex(v2);
+
+        if(va == vertices.end()) {v1 = insert_vertex(v1); va = find_vertex(v1);}
+        if(vb == vertices.end()) {v2 = insert_vertex(v2); vb = find_vertex(v2);}
+
+        va->second->adj_edge.push_back(e);
+        vb->second->adj_edge.push_back(e);
+
         edges.push_back(e);
 
         return ed;
     }
+
     void insert_edge_undirected(vertex_descriptor v1, vertex_descriptor v2,
-        const EdgeProperty& ep) {
+                                const EdgeProperty& ep) {
         insert_edge(v1, v2, ep);
         insert_edge(v2, v1, ep);
     }
+
     void erase_vertex(vertex_descriptor);
     void erase_edge(edge_descriptor);
     void clear();
@@ -176,12 +186,15 @@ class graph {
         adj_edge_iterator begin() {
             return adj_edge.begin();
         }
+
         const_adj_edge_iterator cbegin() const {
             return adj_edge.cbegin();
         }
+
         adj_edge_iterator end() {
             return adj_edge.end();
         }
+
         const_adj_edge_iterator cend() const {
             return adj_edge.cend();
         }
@@ -190,9 +203,11 @@ class graph {
         const vertex_descriptor descriptor() const {
             return desc;
         }
+
         VertexProperty& property() {
             return prop;
         }
+
         const VertexProperty& property() const {
             return prop;
         }
@@ -245,15 +260,19 @@ class graph {
         const vertex_descriptor source() const {
             return start;
         }
+
         const vertex_descriptor target() const {
             return end;
         }
+
         const edge_descriptor descriptor() const {
             return desc;
         }
+
         EdgeProperty& property() {
             return prop;
         }
+
         const EdgeProperty& property() const {
             return prop;
         }
