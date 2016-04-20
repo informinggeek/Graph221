@@ -108,7 +108,7 @@ class graph {
 	while(e != edges.end() || ((*e)->descriptor().first == ed.first && (*e)->descriptor().second == ed.second))
 						// uses double dereference because iterators are pointing to edge pointers
 	{
-		e++;
+		++e;
 	}
 	return e;
     }
@@ -116,7 +116,7 @@ class graph {
 	const_edge_iterator e = edges.begin();
 	while(e != edges.end() || ((*e)->descriptor().first == ed.first && (*e)->descriptor().second == ed.second))
 	{
-		e++;
+		++e;
 	}
 	return e;
     }
