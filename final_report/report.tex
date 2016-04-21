@@ -1,13 +1,16 @@
 \documentclass[titlepage]{article}
 
 \usepackage{
-	geometry
+	geometry,
+	multicol
 }
 
 \geometry{
 	letterpaper,
 	margin=1in
 }
+
+\setlength{\columnsep}{0.25in}
 
 \title{
 	\textbf{
@@ -28,6 +31,26 @@
 
 \begin{document}
 	\maketitle
+	\begin{multicols}{2}
+		\section{Introduction}
+		\section{Implementation Details}
+			\subsection{Graph}
+			\subsection{Input/Output}
+			\subsection{Breadth-First Search}
+			\subsection{Shortest Path}
 
+		\section{Theoretical Analysis}
+			\subsection{Graph}
+			\subsection{Input/Output}
+			\subsection{Breadth-First Search}
+			\subsection{Shortest Path}
 
+		\section{Experimental Analysis}
+			\subsection{Testing Hardware}
+			\subsection{Results}
+			\subsection{Big-O Constants}
+		\section{Results and Discussion}
+		\section{Team Contributions}
+		\section{Conclusion}
+	\end{multicols}
 \end{document}
