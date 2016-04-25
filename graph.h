@@ -97,16 +97,17 @@ class graph {
     ///@todo Define accessors
     // return the number of vertices in the graph
     size_t num_vertices() const {
-	return vertices.size();
+	   return vertices.size();
     }
     // return the number of edges in the graph
     size_t num_edges() const {
-	return edges.size();
+	   return edges.size();
     }
 
     // find a vertex in the graph
     vertex_iterator find_vertex(vertex_descriptor vd) {
-        vertex_iterator v = vertices.find(vd);       // uses the map's member function find() to search for the desired vertex
+        // uses the map's member function find() to search for the desired vertex
+        vertex_iterator v = vertices.find(vd);
         return v;
     }
 
@@ -129,25 +130,30 @@ class graph {
     ///@todo Define modifiers
     // insert a new vertex into the graph
     vertex_descriptor insert_vertex(const VertexProperty& vp) {
-        vertex_descriptor vd = counter.next();			// assigns the vertex a value based on the vertex counter
-        vertices[vd] = new vertex(vd, vp);			// inserts a new vertex using the map's []operator
+        // assigns the vertex a value based on the vertex counter
+        vertex_descriptor vd = counter.next();
+        // inserts a new vertex using the map's []operator
+        vertices[vd] = new vertex(vd, vp);
         return vd;
     }
 
     // insert a new directed edge into the graph
     edge_descriptor insert_edge(vertex_descriptor v1, vertex_descriptor v2,
                                 const EdgeProperty& ep) {
-        edge_descriptor ed = edge_descriptor(v1, v2);		// make an edge descriptor from the two vertices
-        vertex_iterator va = find_vertex(v1);			// find the vertices to make sure they exist
+        // make an edge descriptor from the two vertices
+        edge_descriptor ed = edge_descriptor(v1, v2);
+        // find the vertices to make sure they exist
+        vertex_iterator va = find_vertex(v1);
         vertex_iterator vb = find_vertex(v2);
-	// if they do not exist, add them
+    	// if they do not exist, add them
         if(va == vertices.end()) {v1 = insert_vertex(v1); va = find_vertex(v1);}
         if(vb == vertices.end()) {v2 = insert_vertex(v2); vb = find_vertex(v2);}
-	// create the edge
+        // create the edge
         edge* e = new edge(v1,v2,ep);
-	edges[ed] = e;			// add it to the master edge map
-
-        va->second->adj_edge[ed] = e;	// add the edge to the vertices' adjacent edge maps
+        // add it to the master edge map
+        edges[ed] = e;
+        // add the edge to the vertices' adjacent edge maps
+        va->second->adj_edge[ed] = e;
         vb->second->adj_edge[ed] = e;
 
         return ed;
@@ -156,45 +162,54 @@ class graph {
     // insert a new undirected edge (two edges connecting the same vertices going in opposite directions)
     void insert_edge_undirected(vertex_descriptor v1, vertex_descriptor v2,
                                 const EdgeProperty& ep) {
-        insert_edge(v1, v2, ep);			// insert two edges, going to and from both vertices
+        // insert two edges, going to and from both vertices
+        insert_edge(v1, v2, ep);
         insert_edge(v2, v1, ep);
     }
 
     // erase a vertex
     void erase_vertex(vertex_descriptor v) {
-	vertex_iterator eraser= vertices.find(v);		// find the desired vertex in the vertex map
-	edge_iterator e = eraser->second->adj_edge.begin();	// find its adjacent edge map
-	while(e != eraser->second->adj_edge.end())		// for every edge adjacent to it
-	{
-		erase_edge(e->first);				// delete the edge
-		++e;
-	}
+        // find the desired vertex in the vertex map
+    	vertex_iterator eraser = vertices.find(v);
+        // find its adjacent edge map
+    	edge_iterator e = eraser->second->adj_edge.begin();
+    	while(e != eraser->second->adj_edge.end()) {
+            // for every edge adjacent to it, delete the edge
+            erase_edge(e->first);
+            ++e;
+        }
     }
 
     // erase a directed edge
     void erase_edge(edge_descriptor e) {
-	vertex_descriptor v1 = e.first;
-	vertex_descriptor v2 = e.second;
+    	vertex_descriptor v1 = e.first;
+    	vertex_descriptor v2 = e.second;
 
-	// insert error case for vertex not existing?
-	vertex_iterator vv = vertices.find(v1);			// find the source vertex
-	vv->second->adj_edge.erase(e);				// erase it
-	vv = vertices.find(v2);					// find the target vertex
-	vv->second->adj_edge.erase(e);				// erase it
-	// find edge, delete it using an iterator
-	auto iterator = edges.find(e);				// find the actual edge
-	delete iterator->second;				// delete it
-	edges.erase(e);						// delete the final pointer from the master edge map
+    	// insert error case for vertex not existing?
+        // find the source vertex//
+    	vertex_iterator vv = vertices.find(v1);
+        // erase it
+    	vv->second->adj_edge.erase(e);
+        // find the target vertex
+    	vv = vertices.find(v2);
+        // erase it
+    	vv->second->adj_edge.erase(e);
+    	// find edge, delete it using an iterator
+        // find the actual edge
+    	auto iterator = edges.find(e);
+        // delete it
+    	delete iterator->second;
+        // delete the final pointer from the master edge map
+    	edges.erase(e);
     }
 
     // clear all edges and vertices from the graph
     void clear() {
-	vertex_iterator v = vertices.begin();
-	while(v != vertices.end())
-	{
-		erase_vertex(v->first);
-		v++;
-	}
+    	vertex_iterator v = vertices.begin();
+        while(v != vertices.end()) {
+    		erase_vertex(v->first);
+    		++v;
+        }
     }
 
     // Friend declarations for input/output.
@@ -220,41 +235,21 @@ class graph {
 
         vertex(vertex_descriptor vd, const VertexProperty& vp) : desc(vd), prop(vp) {}
 
-        adj_edge_iterator begin() {
-            return adj_edge.begin();
-        }
-
-        const_adj_edge_iterator cbegin() const {
-            return adj_edge.cbegin();
-        }
-
-        adj_edge_iterator end() {
-            return adj_edge.end();
-        }
-
-        const_adj_edge_iterator cend() const {
-            return adj_edge.cend();
-        }
+        adj_edge_iterator begin() {return adj_edge.begin();}
+        const_adj_edge_iterator cbegin() const {return adj_edge.cbegin();}
+        adj_edge_iterator end() {return adj_edge.end();}
+        const_adj_edge_iterator cend() const {return adj_edge.cend();}
 
         ///@todo Define accessor operations
-        const vertex_descriptor descriptor() const {
-            return desc;
-        }
-
-        VertexProperty& property() {
-            return prop;
-        }
-
-        const VertexProperty& property() const {
-            return prop;
-        }
+        const vertex_descriptor descriptor() const {return desc;}
+        VertexProperty& property() {return prop;}
+        const VertexProperty& property() const {return prop;}
 
         MyAdjEdgeContainer adj_edge;
 
       private:
 
         ///@todo Specify the internal state of a vertex.
-
         vertex_descriptor desc;
         VertexProperty prop;
     };
@@ -294,25 +289,15 @@ class graph {
             }
 
         ///@todo Define accessor operations
-        const vertex_descriptor source() const {
-            return start;
-        }
+        const vertex_descriptor source() const {return start;}
 
-        const vertex_descriptor target() const {
-            return end;
-        }
+        const vertex_descriptor target() const {return end;}
 
-        const edge_descriptor descriptor() const {
-            return desc;
-        }
+        const edge_descriptor descriptor() const {return desc;}
 
-        EdgeProperty& property() {
-            return prop;
-        }
+        EdgeProperty& property() {return prop;}
 
-        const EdgeProperty& property() const {
-            return prop;
-        }
+        const EdgeProperty& property() const {return prop;}
 
       private:
 
