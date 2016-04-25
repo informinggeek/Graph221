@@ -73,7 +73,7 @@ class graph {
 
     ///@todo Define constructor/destructor
     graph() {
-	// not correct; check checkpoint to fix
+    // not correct; check checkpoint to fix
         counter = vertex_counter();
     }
 
@@ -97,11 +97,11 @@ class graph {
     ///@todo Define accessors
     // return the number of vertices in the graph
     size_t num_vertices() const {
-	   return vertices.size();
+       return vertices.size();
     }
     // return the number of edges in the graph
     size_t num_edges() const {
-	   return edges.size();
+       return edges.size();
     }
 
     // find a vertex in the graph
@@ -118,12 +118,12 @@ class graph {
 
     // find an edge in the graph
     edge_iterator find_edge(edge_descriptor ed) {
-	edge_iterator e = edges.find(ed);
+    edge_iterator e = edges.find(ed);
         return e;
     }
 
     const_edge_iterator find_edge(edge_descriptor ed) const {
-	const_edge_iterator e = edges.find(ed);
+    const_edge_iterator e = edges.find(ed);
         return e;
     }
 
@@ -145,7 +145,7 @@ class graph {
         // find the vertices to make sure they exist
         vertex_iterator va = find_vertex(v1);
         vertex_iterator vb = find_vertex(v2);
-    	// if they do not exist, add them
+        // if they do not exist, add them
         if(va == vertices.end()) {v1 = insert_vertex(v1); va = find_vertex(v1);}
         if(vb == vertices.end()) {v2 = insert_vertex(v2); vb = find_vertex(v2);}
         // create the edge
@@ -170,10 +170,10 @@ class graph {
     // erase a vertex
     void erase_vertex(vertex_descriptor v) {
         // find the desired vertex in the vertex map
-    	vertex_iterator eraser = vertices.find(v);
+        vertex_iterator eraser = vertices.find(v);
         // find its adjacent edge map
-    	edge_iterator e = eraser->second->adj_edge.begin();
-    	while(e != eraser->second->adj_edge.end()) {
+        edge_iterator e = eraser->second->adj_edge.begin();
+        while(e != eraser->second->adj_edge.end()) {
             // for every edge adjacent to it, delete the edge
             erase_edge(e->first);
             ++e;
@@ -182,33 +182,33 @@ class graph {
 
     // erase a directed edge
     void erase_edge(edge_descriptor e) {
-    	vertex_descriptor v1 = e.first;
-    	vertex_descriptor v2 = e.second;
+        vertex_descriptor v1 = e.first;
+        vertex_descriptor v2 = e.second;
 
-    	// insert error case for vertex not existing?
+        // insert error case for vertex not existing?
         // find the source vertex//
-    	vertex_iterator vv = vertices.find(v1);
+        vertex_iterator vv = vertices.find(v1);
         // erase it
-    	vv->second->adj_edge.erase(e);
+        vv->second->adj_edge.erase(e);
         // find the target vertex
-    	vv = vertices.find(v2);
+        vv = vertices.find(v2);
         // erase it
-    	vv->second->adj_edge.erase(e);
-    	// find edge, delete it using an iterator
+        vv->second->adj_edge.erase(e);
+        // find edge, delete it using an iterator
         // find the actual edge
-    	auto iterator = edges.find(e);
+        auto iterator = edges.find(e);
         // delete it
-    	delete iterator->second;
+        delete iterator->second;
         // delete the final pointer from the master edge map
-    	edges.erase(e);
+        edges.erase(e);
     }
 
     // clear all edges and vertices from the graph
     void clear() {
-    	vertex_iterator v = vertices.begin();
+        vertex_iterator v = vertices.begin();
         while(v != vertices.end()) {
-    		erase_vertex(v->first);
-    		++v;
+           erase_vertex(v->first);
+           ++v;
         }
     }
 
@@ -313,24 +313,26 @@ class graph {
 ///@todo Define io operations for the graph.
 template<typename V, typename E>
 std::istream& operator>>(std::istream& is, graph<V, E>& g) {
-	size_t num_vertices;
-	size_t num_edges;
-	V vd;
-	size_t v1,v2;
-	E ed;
-	is>>num_vertices>>num_edges;
-	for(int i=0;i<num_vertices;++i)
-	{
-		is>>vd;
-		g.insert_vertex(vd);
-	}
-	for(int i=0;i<num_edges;++i)
-	{
-		is>>v1>>v2>>ed;
-		g.insert_edge(v1,v2,ed);
-	}
-	return is;
+    size_t num_vertices = 0;
+    size_t num_edges = 0;
+    is >> num_vertices >> num_edges;
+
+    V vd;
+    E ed;
+    for (size_t i = 0; i < num_vertices; ++i) {
+       is >> vd;
+       g.insert_vertex(vd);
+    }
+
+    size_t v1, v2;
+    for (size_t i = 0; i < num_edges; ++i) {
+       is >> v1 >> v2 >> ed;
+       g.insert_edge(v1, v2, ed);
+    }
+
+    return is;
 }
+
 template<typename V, typename E>
 std::ostream& operator<<(std::ostream& os, const graph<V, E>& g) {
     os << g.num_vertices() << ' ' << g.num_edges() << std::endl;
