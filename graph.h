@@ -347,6 +347,20 @@ std::istream& operator>>(std::istream& is, graph<V, E>& g) {
 	return is;
 }
 template<typename V, typename E>
-std::ostream& operator<<(std::ostream&, const graph<V, E>&);
+std::ostream& operator<<(std::ostream& os, const graph<V, E>& g) {
+    os << g.num_vertices() << ' ' << g.num_edges() << std::endl;
+
+    for (auto v = g.vertices_cbegin(); v != g.vertices_cend(); ++v) {
+        os << (*v).second->property() << std::endl;
+    }
+
+    for (auto e = g.edges_cbegin(); e != g.edges_cend(); ++e) {
+        os << (*e).second->source() << ' ';
+        os << (*e).second->target() << ' ';
+        os << (*e).second->property() << std::endl;
+    }
+
+    return os;
+}
 
 #endif

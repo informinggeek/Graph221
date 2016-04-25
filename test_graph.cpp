@@ -23,23 +23,23 @@ int main() {
 
   // Exercise iterators and accessors.
   for(auto vi = g.vertices_begin(); vi != g.vertices_end(); ++vi)
-    cout << (*vi)->descriptor() << " " << (*vi)->property() << endl;
+    cout << (*vi).second->descriptor() << " " << (*vi).second->property() << endl;
 
   for(auto vi = g.vertices_cbegin(); vi != g.vertices_cend(); ++vi)
-    cout << (*vi)->descriptor() << " " << (*vi)->property() << endl;
+    cout << (*vi).second->descriptor() << " " << (*vi).second->property() << endl;
 
   for(auto ei = g.edges_begin(); ei != g.edges_end(); ++ei)
-    cout << (*ei)->source() << " " << (*ei)->target() << " "
-         << (*ei)->property() << endl;
+    cout << (*ei).second->source() << " " << (*ei).second->target() << " "
+         << (*ei).second->property() << endl;
 
   for(auto ei = g.edges_cbegin(); ei != g.edges_cend(); ++ei)
-    cout << (*ei)->source() << " " << (*ei)->target() << " "
-         << (*ei)->property() << endl;
+    cout << (*ei).second->source() << " " << (*ei).second->target() << " "
+         << (*ei).second->property() << endl;
 
   // Exercise find
   graph<int, double>::edge_descriptor ed(0, 1);
-  cout << (*g.find_vertex(0))->property() << " "
-       << (*g.find_edge(ed))->property()
+  cout << (*g.find_vertex(0)).second->property() << " "
+       << (*g.find_edge(ed)).second->property()
        << endl;
 
   // Exercise erase
@@ -47,6 +47,7 @@ int main() {
   g.erase_vertex(0);
 
   // Exercise output
+  cout << "output" << endl;
   cout << g;
 
   t.stop();
