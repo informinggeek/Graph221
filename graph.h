@@ -193,7 +193,7 @@ class graph {
 	while(v != vertices.end())
 	{
 		erase_vertex(v->first);
-		v++;
+		++v;
 	}
     }
 
