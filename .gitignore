@@ -1,2 +1,8 @@
 *.o
 graph
+final_report/report.aux
+final_report/report.fdb_latexmk
+final_report/report.fls
+final_report/report.log
+final_report/report.pdf
+final_report/report.synctex.gz
