@@ -73,6 +73,7 @@ class graph {
 
     ///@todo Define constructor/destructor
     graph() {
+	// not correct; check checkpoint to fix
         counter = vertex_counter();
     }
 
@@ -187,7 +188,14 @@ class graph {
     }
 
     // clear all edges and vertices from the graph
-    void clear();
+    void clear() {
+	vertex_iterator v = vertices.begin();
+	while(v != vertices.end())
+	{
+		erase_vertex(v->first);
+		v++;
+	}
+    }
 
     // Friend declarations for input/output.
     template<typename V, typename E>
