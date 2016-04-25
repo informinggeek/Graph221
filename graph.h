@@ -73,6 +73,7 @@ class graph {
 
     ///@todo Define constructor/destructor
     graph() {
+	// not correct; check checkpoint to fix
         counter = vertex_counter();
     }
 
@@ -187,7 +188,14 @@ class graph {
     }
 
     // clear all edges and vertices from the graph
-    void clear();
+    void clear() {
+	vertex_iterator v = vertices.begin();
+	while(v != vertices.end())
+	{
+		erase_vertex(v->first);
+		v++;
+	}
+    }
 
     // Friend declarations for input/output.
     template<typename V, typename E>
@@ -319,7 +327,25 @@ class graph {
 
 ///@todo Define io operations for the graph.
 template<typename V, typename E>
-std::istream& operator>>(std::istream&, graph<V, E>&);
+std::istream& operator>>(std::istream& is, graph<V, E>& g) {
+	size_t num_vertices;
+	size_t num_edges;
+	V vd;
+	size_t v1,v2;
+	E ed;
+	is>>num_vertices>>num_edges;
+	for(int i=0;i<num_vertices;++i)
+	{
+		is>>vd;
+		g.insert_vertex(vd);
+	}
+	for(int i=0;i<num_edges;++i)
+	{
+		is>>v1>>v2>>ed;
+		g.insert_edge(v1,v2,ed);
+	}
+	return is;
+}
 template<typename V, typename E>
 std::ostream& operator<<(std::ostream& os, const graph<V, E>& g) {
     os << g.num_vertices() << ' ' << g.num_edges() << std::endl;
