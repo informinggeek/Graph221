@@ -1,0 +1,64 @@
+Overview
+
+In this assignment, you are tasked with implementing the graph ADT using an adjacency list implementation. As usual, there will be a code portion and a report portion to this assignment.
+Requirements
+
+At a minimum, you must implement the following for your graph:
+
+    Core ADT as found in the book. You must use the provided interface, but the design of the functions and internal state is up to you. Basic requirements include:
+        The graph takes two template parameters for vertex object and edge object types and should contain internal classes for vertex and edge.
+        Vertices are referred to by a global vertex descriptor (size_t). Edges are referred to by edge descriptors (pair<size_t, size_t>).
+        Typedefs should define descriptors, storage, and iterators for vertices, edges, and adjacency lists.
+        Accessors must be provided for properties, descriptors, begin/end iterators, and finding vertices/edges based on descriptors.
+        Basic modifiers should be provided for inserting and removing vertices and edges.
+
+    Input/Output operators for your graph class using the following file specification:
+    Example file:
+
+    5 4
+    D
+    E
+    N
+    N
+    Y
+    0 1 40
+    3 4 23
+    1 0 40
+    4 3 23
+    Corresponding Specification:
+
+    num_vertices num_edges
+    vertex_0
+    vertex_1
+    ...
+    vertex_n
+    edge_0
+    edge_1
+    ...
+    edge_m
+
+    Note edges are formed as v_i v_j weight. Here is a larger example file for a graph<int, int>.
+
+    A breadth-first search algorithm, which labels the vertices and edges as discussed in class and stores extra pointer information for the BFS tree. The interface for the BFS function can be found in the algorithms file.
+
+    You must also implement one of the MST or SSSP algorithms for your graph. Interfaces for these functions are also in the algorithms file.
+
+Report
+
+For each algorithm you implement, test performance of your graph on:
+
+    A planar mesh (a 2d grid of nodes where each interior vertex has degree 4).
+
+    A complete graph (all nodes are mutually connected).
+
+    A randomly connected graph (start with a connected line of vertices, then add random edges).
+
+After doing base performance measurements, you also need to determine the big-oh constants for the algorithm on a planar mesh input. The report should include the following sections:
+
+    Introduction: describe the problem and objectives.
+    Implementation details: discuss design decisions of the graph.
+    Theoretical Analysis: discuss complexity of graph operations and algorithms.
+    Experimental Analysis: discuss setup, results, and big-oh constants. Attempt to explain any anomolous observations.
+    Team Contributions: detail the individual contributions of each team member.
+    Conclusion: extract the most important analyses from your experiments and provide an executive summary. State what you learned through the project and how/why you might do things differently if you were going to do it again.
+

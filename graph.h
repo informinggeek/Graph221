@@ -327,7 +327,25 @@ class graph {
 
 ///@todo Define io operations for the graph.
 template<typename V, typename E>
-std::istream& operator>>(std::istream&, graph<V, E>&);
+std::istream& operator>>(std::istream& is, graph<V, E>& g) {
+	size_t num_vertices;
+	size_t num_edges;
+	V vd;
+	size_t v1,v2;
+	E ed;
+	is>>num_vertices>>num_edges;
+	for(int i=0;i<num_vertices;++i)
+	{
+		is>>vd;
+		g.insert_vertex(vd);
+	}
+	for(int i=0;i<num_edges;++i)
+	{
+		is>>v1>>v2>>ed;
+		g.insert_edge(v1,v2,ed);
+	}
+	return is;
+}
 template<typename V, typename E>
 std::ostream& operator<<(std::ostream&, const graph<V, E>&);
 
