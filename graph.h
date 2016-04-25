@@ -166,7 +166,7 @@ class graph {
 	while(e != eraser->second->adj_edge.end())		// for every edge adjacent to it
 	{
 		erase_edge(e->first);				// delete the edge
-		e++;
+		++e;
 	}
     }
 
