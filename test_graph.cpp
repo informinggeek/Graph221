@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include "graph.h"
 #include "graph_algorithms.h"
@@ -12,17 +13,24 @@ int main() {
 
   // Create a graph.
   graph<int, double> g;
-  g.insert_vertex(5);
-  g.insert_vertex(4);
-  g.insert_edge(0, 1, 0.5);
-  g.insert_edge(1, 0, 0.25);
+  // g.insert_vertex(5);
+  // g.insert_vertex(4);
+  // g.insert_edge(0, 1, 0.5);
+  //  g.insert_edge(1, 0, 0.25);
+
+  // testing input stream
+  ifstream is{"football.g"};
+  is>>g;
 
   t.stop();
   cout << "Creating the graph took " << t.elapsed() / 1e6 << " ms" << endl;
   t.restart();
 
+
+  cout << "Number of vertices: " << g.num_vertices() << endl;
+  cout<< "Number of edges: " << g.num_edges() << endl;
   // Exercise iterators and accessors.
-  for(auto vi = g.vertices_begin(); vi != g.vertices_end(); ++vi)
+  /* for(auto vi = g.vertices_begin(); vi != g.vertices_end(); ++vi)
     cout << (*vi).second->descriptor() << " " << (*vi).second->property() << endl;
 
   for(auto vi = g.vertices_cbegin(); vi != g.vertices_cend(); ++vi)
@@ -35,16 +43,16 @@ int main() {
   for(auto ei = g.edges_cbegin(); ei != g.edges_cend(); ++ei)
     cout << (*ei).second->source() << " " << (*ei).second->target() << " "
          << (*ei).second->property() << endl;
-
+  */
   // Exercise find
-  graph<int, double>::edge_descriptor ed(0, 1);
-  cout << (*g.find_vertex(0)).second->property() << " "
-       << (*g.find_edge(ed)).second->property()
-       << endl;
+  //  graph<int, double>::edge_descriptor ed(0, 1);
+  //cout << (*g.find_vertex(0)).second->property() << " "
+  //     << (*g.find_edge(ed)).second->property()
+  //     << endl;
 
   // Exercise erase
-  g.erase_edge(ed);
-  g.erase_vertex(0);
+  //  g.erase_edge(ed);
+  // g.erase_vertex(0);
 
   // Exercise output
   cout << "output" << endl;
@@ -52,4 +60,5 @@ int main() {
 
   t.stop();
   cout << "Exercises took " << t.elapsed() / 1e6 << " ms" << endl;
+
 }
