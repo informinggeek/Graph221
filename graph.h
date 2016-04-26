@@ -240,6 +240,9 @@ class graph {
         adj_edge_iterator end() {return adj_edge.end();}
         const_adj_edge_iterator cend() const {return adj_edge.cend();}
 
+        size_t get_label() const {return label;}
+        void set_label(size_t l) {label = l;}
+
         ///@todo Define accessor operations
         const vertex_descriptor descriptor() const {return desc;}
         VertexProperty& property() {return prop;}
@@ -252,6 +255,8 @@ class graph {
         ///@todo Specify the internal state of a vertex.
         vertex_descriptor desc;
         VertexProperty prop;
+        size_t label;
+
     };
 
     class vertex_counter {
@@ -290,14 +295,13 @@ class graph {
 
         ///@todo Define accessor operations
         const vertex_descriptor source() const {return start;}
-
         const vertex_descriptor target() const {return end;}
-
         const edge_descriptor descriptor() const {return desc;}
-
         EdgeProperty& property() {return prop;}
-
         const EdgeProperty& property() const {return prop;}
+
+        size_t get_label() const {return label;}
+        void set_label(size_t l) {label = l;}
 
       private:
 
@@ -306,6 +310,7 @@ class graph {
         vertex_descriptor end;
         edge_descriptor desc;
         EdgeProperty prop;
+        size_t label;
     };
 
 };
