@@ -21,10 +21,24 @@
 //
 // Remember that every extra algorithm you implement can earn you bonus.
 
+enum Label {UNEXPLORED, VISITED, DISCOVERY, CROSS, BACK};
+
 ///@todo Implement breadth-first search.
 template<typename Graph, typename ParentMap>
 void breadth_first_search(const Graph& g,
-    const typename Graph::vertex_descriptor vd, ParentMap& p);
+    const typename Graph::vertex_descriptor vd, ParentMap& p) {
+    for (auto v = g.vertices_cbegin(); v != g.vertices_cend(); ++v) {
+        (*v).second->set_label(UNEXPLORED);
+    }
+
+    for (auto e = g.edges_cbegin(); e != g.edges_cend(); ++e) {
+        (*e).second->set_label(UNEXPLORED);
+    }
+
+    for (auto v = g.vertices_cbegin(); v != g.vertices_cend(); ++v) {
+        // BFS(g, v)
+    }
+}
 
 ///@bonus Implement depth-first search.
 template<typename Graph, typename ParentMap>
