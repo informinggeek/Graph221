@@ -33,7 +33,7 @@ void depth_first_search(const Graph& g,
 
 ///@todo Implement one of the MST or SSSP algorithms.
 ///@bonus Implement the other algorithms below.
-template<typename Graph, typename ParentMap>
+template<typename Graph, typename ParentMap>				// for the parent map: key = child ID, value = parent ID
 void mst_prim_jarniks(const Graph& g, ParentMap& p);
 
 template<typename Graph, typename ParentMap>

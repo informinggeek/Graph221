@@ -73,8 +73,6 @@ class graph {
 
     ///@todo Define constructor/destructor
     graph() {
-	// not correct; check checkpoint to fix
-        counter = vertex_counter();
     }
 
     ~graph() = default;
