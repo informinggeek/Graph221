@@ -20,7 +20,7 @@ int main() {
     //  g.insert_edge(1, 0, 0.25);
 
     // testing input stream
-    ifstream is{"test.g"};
+    ifstream is{"football.g"};
     is>>g;
 
     t.stop();
