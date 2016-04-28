@@ -20,7 +20,7 @@ int main() {
     //  g.insert_edge(1, 0, 0.25);
 
     // testing input stream
-    ifstream is{"football.g"};
+    ifstream is{"test.g"};
     is>>g;
 
     t.stop();
@@ -67,4 +67,8 @@ int main() {
 
     breadth_first_search(g, vd ,p);
 
+   std::cout<<"Got to Kruskal's.\n";
+   map<size_t,size_t> m;
+   mst_kruskals(g,m);
+   std::cout<<"Finish Kruskal's.\n";
 }

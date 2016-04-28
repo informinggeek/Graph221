@@ -1,7 +1,10 @@
 #ifndef _GRAPH_ALGORITHMS_H_
 #define _GRAPH_ALGORITHMS_H_
 
-
+#include <map>
+#include <algorithm>
+#include <vector>
+#include <iostream>
 // This is an example list of the basic algorithms we will work with in class.
 //
 // In general this is what the following template parameters are:
@@ -51,7 +54,59 @@ template<typename Graph, typename ParentMap>				// for the parent map: key = chi
 void mst_prim_jarniks(const Graph& g, ParentMap& p);
 
 template<typename Graph, typename ParentMap>
-void mst_kruskals(const Graph& g, ParentMap& p);
+void mst_kruskals(const Graph& g, ParentMap& p)
+{
+	std::map<size_t,typename Graph::edge_descriptor> m; 
+	for(auto i = g.edges.begin(); i != g.edges.end(); ++i)
+	{
+		m.insert(std::pair<size_t, typename Graph::edge_descriptor>(i->second->property(), i->first));		// inserts the edges into a map that sorts them in ascending order
+	}
+	typedef std::vector<typename Graph::vertex_descriptor> cluster;		// defines a cluster as a vector of vertex descriptors
+
+	std::vector<cluster> clusters(g.num_vertices());		// creates a cluster of clusters, (i.e., each vertex has its own vector, so more can be added during the merge process 
+	std::vector<cluster*>cluster_map(g.num_vertices());		// creates a vector of pointers to each of the clusters
+
+	// assumes vertices are from [0,n-1]; if some have been deleted, this will not work
+
+	for(auto i = 0; i < g.num_vertices(); ++i )			// for every vertex in g
+	{
+			clusters[i].push_back(i);			// add the vertex to its own cluster
+			cluster_map[i] = &clusters[i];			// set a pointer to that cluster
+	}
+
+
+	while(p.size()<g.num_vertices()-1)
+	{
+		auto s = m.begin();
+		auto a = m.begin()->first;
+		std::pair<size_t,size_t> n = s->second;
+		m.erase(a);
+		if(cluster_map[n.first] != cluster_map[n.second])	// checks if the vertices are in different clusters
+		{
+			p[n.second] = n.first;
+		// merge process will update pointer of smaller cluster to point to larger cluster
+			if((*cluster_map[n.first]).size() > (*cluster_map[n.second]).size())	// if the first cluster is larger than the second cluster
+			{
+				auto cl = cluster_map[n.second];
+				for(auto i = 0; i < cl->size(); ++i)
+				{
+					(*cluster_map[n.first]).push_back((*cluster_map[n.second])[i]);	// takes an element from the smaller cluster, adds it to the larger one (needs cleaning up, probably)
+					cluster_map[n.second] = cluster_map[n.first];
+				}
+			}
+			else				// otherwise, use the other cluster
+			{
+				auto cl = cluster_map[n.first];
+				for(auto i = 0; i < cl->size(); ++i)
+				{
+					(*cluster_map[n.second]).push_back((*cluster_map[n.first])[i]);	// takes an element from the smaller cluster, adds it to the larger one (needs cleaning up, probably)
+					cluster_map[n.first] = cluster_map[n.second];
+				}
+			}
+		}
+	}
+
+}
 
 template<typename Graph, typename ParentMap, typename DistanceMap>
 void sssp_dijkstras(const Graph& g, const typename Graph::vertex_descriptor vd,
