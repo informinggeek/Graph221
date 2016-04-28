@@ -67,8 +67,11 @@ int main() {
 
     breadth_first_search(g, vd ,p);
 
-   std::cout<<"Got to Kruskal's.\n";
+   graph<int, double> k;
+   ifstream reader{"test.g"};
+   reader>>k;
+   std::cout<<"Got to Kruskal's. Using input from test.g.\n";
    map<size_t,size_t> m;
-   mst_kruskals(g,m);
-   std::cout<<"Finish Kruskal's.\n";
+   mst_kruskals(k,m);
+   std::cout<<"Finished Kruskal's.\n";
 }

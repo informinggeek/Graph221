@@ -50,16 +50,24 @@ void depth_first_search(const Graph& g,
 
 ///@todo Implement one of the MST or SSSP algorithms.
 ///@bonus Implement the other algorithms below.
-template<typename Graph, typename ParentMap>				// for the parent map: key = child ID, value = parent ID
+template<typename Graph, typename ParentMap>
 void mst_prim_jarniks(const Graph& g, ParentMap& p);
 
 template<typename Graph, typename ParentMap>
 void mst_kruskals(const Graph& g, ParentMap& p)
 {
+// Initialization and setup //
+//////////////////////////////
 	std::map<size_t,typename Graph::edge_descriptor> m; 
+
 	for(auto i = g.edges.begin(); i != g.edges.end(); ++i)
 	{
 		m.insert(std::pair<size_t, typename Graph::edge_descriptor>(i->second->property(), i->first));		// inserts the edges into a map that sorts them in ascending order
+	}
+	if (m.size() != g.edges.size())		// if only one edge is in the map, then all the edges have the same weight (and thus overwrote each other in the map)
+	{
+		std::cout<<"All edges have the same weight. Therefore, every spanning tree is a mininmum spanning tree.\n";
+		return;
 	}
 	typedef std::vector<typename Graph::vertex_descriptor> cluster;		// defines a cluster as a vector of vertex descriptors
 
@@ -74,17 +82,18 @@ void mst_kruskals(const Graph& g, ParentMap& p)
 			cluster_map[i] = &clusters[i];			// set a pointer to that cluster
 	}
 
+// Creating the MST using Kruskal's Algorithm //
+////////////////////////////////////////////////
 
 	while(p.size()<g.num_vertices()-1)
 	{
 		auto s = m.begin();
 		auto a = m.begin()->first;
-		std::pair<size_t,size_t> n = s->second;
+		std::pair<size_t,size_t> n = s->second;		// gets the edge to be checked
 		m.erase(a);
 		if(cluster_map[n.first] != cluster_map[n.second])	// checks if the vertices are in different clusters
 		{
-			p[n.second] = n.first;
-		// merge process will update pointer of smaller cluster to point to larger cluster
+			p[n.second] = n.first;			// inserts the edge into the parent map
 			if((*cluster_map[n.first]).size() > (*cluster_map[n.second]).size())	// if the first cluster is larger than the second cluster
 			{
 				auto cl = cluster_map[n.second];
