@@ -90,6 +90,7 @@ int main() {
     }
 
     success = true;
+    cout << "Unlabelled edges:" << endl;
     for (auto e = g.edges_begin(); e != g.edges_end(); ++e) {
         if ((*e).second->get_label() == UNEXPLORED) {
             cout << '(';
@@ -101,9 +102,8 @@ int main() {
         }
     }
 
-    if (!success) {
-        cout << "Unlabeled edge!" << endl;
-    } else {
+    if (success) {
+        cout << "none" << endl;
         cout << "BFS labelled all edges." << endl << endl;
     }
 
