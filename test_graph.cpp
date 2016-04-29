@@ -60,12 +60,57 @@ int main() {
     cout << g;
 
     t.stop();
-    cout << "Exercises took " << t.elapsed() / 1e6 << " ms" << endl;
+    cout << "Exercises took " << t.elapsed() / 1e6 << " ms" << endl << endl;
+
 
     map<size_t, size_t> p;
     graph<int, double>::vertex_descriptor vd(1);
 
-    breadth_first_search(g, vd ,p);
+    cout << "Starting BFS" << endl;
+    for (auto v = g.vertices_begin(); v != g.vertices_end(); ++v) {
+        (*v).second->set_label(UNEXPLORED);
+    }
+    for (auto e = g.edges_begin(); e != g.edges_end(); ++e) {
+        (*e).second->set_label(UNEXPLORED);
+    }
+
+    for (auto v = g.vertices_begin(); v != g.vertices_end(); ++v) {
+        if ((*v).second->get_label() == UNEXPLORED) {
+            breadth_first_search(g, (*v).second->descriptor(), p);
+        }
+    }
+
+    bool success = true;
+    for (auto v = g.vertices_begin(); v != g.vertices_end(); ++v) {
+        if ((*v).second->get_label() == UNEXPLORED) {
+            success = false;
+        }
+    }
+
+    if (!success) {
+        cout << "Unlabeled vertex!" << endl;
+    } else {
+        cout << "BFS labelled all vertices." << endl;
+    }
+
+    success = true;
+    for (auto e = g.edges_begin(); e != g.edges_end(); ++e) {
+        if ((*e).second->get_label() == UNEXPLORED) {
+            cout << '(';
+            cout << (*e).second->source();
+            cout << ", ";
+            cout << (*e).second->target();
+            cout << ')' << endl;
+            success = false;
+        }
+    }
+
+    if (!success) {
+        cout << "Unlabeled edge!" << endl;
+    } else {
+        cout << "BFS labelled all edges." << endl << endl;
+    }
+
 
    graph<int, double> k;
    ifstream reader{"test.g"};
