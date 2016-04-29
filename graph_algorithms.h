@@ -101,15 +101,11 @@ void mst_kruskals(const Graph& g, ParentMap& p) {
 
     auto e = m.end();
     --e;
-    std::cout << m.begin()->first << std::endl;
-    std::cout << e->first         << std::endl;
 
-    // if only one edge is in the map, then all the edges have the same weight
+    // if the first edge weight equals the last edge weight, then
+    // all the edges have the same weight
     // (and thus overwrote each other in the map)
     if (m.begin()->first == e->first) {
-        std::cout << "All edges have the same weight.";
-        std::cout << "Therefore, every spanning tree is a";
-        std::cout << "minimum spanning tree.\n";
         return;
     }
 
@@ -138,8 +134,6 @@ void mst_kruskals(const Graph& g, ParentMap& p) {
     ////////////////////////////////////////////////
 
     while (p.size() < g.num_vertices() - 1) {
-        std::cout << "Run " << p.size() << " of " << g.num_vertices() - 1;
-        std::cout << std::endl;
 
         auto s = m.begin();
         auto a = m.begin()->first;
@@ -147,7 +141,6 @@ void mst_kruskals(const Graph& g, ParentMap& p) {
         // gets the edge to be checked
         std::pair<size_t,size_t> n = s->second;
         m.erase(a);
-        std::cout << n.first << ' ' << n.second << std::endl;
 
         // checks if the vertices are in different clusters
         if (cluster_map[n.first] != cluster_map[n.second]) {

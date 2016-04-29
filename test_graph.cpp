@@ -112,8 +112,46 @@ int main() {
    ifstream reader{"test.g"};
    reader >> k;
 
-   std::cout << "Got to Kruskal's. Using input from test.g.\n";
+   cout << "Running Kruskal's. Using input from football.g.\n";
    multimap<size_t,size_t> m;
    mst_kruskals(g,m);
-   std::cout << "Finished Kruskal's.\n";
+   cout << "Finished Kruskal's for football.g.\n";
+   if(g.num_vertices()-1 == m.size()) {
+	cout<< "Proper number of edges have been added to the MST.\n";
+   }
+   else if(m.size() == 0)
+   {
+	cout << "All edges have the same weight. ";
+	cout << "Therefore, every spanning tree is a minimum spanning tree.\n\n";
+	success = false;
+   }
+   else {
+	cout<< "Incorrect number of edges.\n\n";
+	success = false;
+   }
+   if(success) {
+	cout << "Kruskal's ran successfully.\n\n";
+   }
+
+   success = true;
+
+   cout << "Running Kruskal's. Using input from test.g.\n";
+   multimap<size_t,size_t> m2;
+   mst_kruskals(k,m);
+   cout << "Finished Kruskal's for test.g.\n";
+   if(k.num_vertices()-1 == m.size()) {
+	cout<< "Proper number of edges have been added to the MST.\n";
+   }
+   else if(m.size() == k.num_edges())
+   {
+	cout << "All edges have the same weight. ";
+	cout << "Therefore, every spanning tree is a minimum spanning tree.\n\n";
+   }
+   else {
+	cout<< "Incorrect number of edges.\n\n";
+	success = false;
+   }
+   if(success) {
+	cout << "Kruskal's ran successfully.\n\n";
+   }
 }
