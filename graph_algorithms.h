@@ -30,41 +30,47 @@ enum Label {UNEXPLORED, VISITED, DISCOVERY, CROSS, BACK};
 ///@todo Implement breadth-first search.
 template<typename Graph, typename ParentMap>
 void breadth_first_search(const Graph& g,
-    const typename Graph::vertex_descriptor vd, ParentMap& p) {
-    // for (auto vertex = g.vertices_cbegin(); vertex != g.vertices_cend(); ++vertex) {
-    //     (*vertex).second->set_label(UNEXPLORED);
-    // }
-
-    // for (auto edge = g.edges_cbegin(); edge != g.edges_cend(); ++edge) {
-    //     (*edge).second->set_label(UNEXPLORED);
-    // }
+                          const typename Graph::vertex_descriptor vd,
+                          ParentMap& p) {
 
     std::queue<typename Graph::vertex_descriptor> q;
-
     typename Graph::vertex_descriptor current = vd;
 
+    // Add the root node to our queue
     (*g.find_vertex(current)).second->set_label(VISITED);
     q.push(current);
 
     while (!q.empty()) {
+        // For each node in the queue
         current = q.front();
         q.pop();
 
         auto i_curr = g.find_vertex(current);
 
-        for (auto i_e = (*i_curr).second->begin(); i_e != (*i_curr).second->end(); ++i_e) {
+        // Look at each edge of the node
+        for (auto i_e = (*i_curr).second->begin();
+             i_e != (*i_curr).second->end(); ++i_e) {
             auto n = (*i_e).second->target();
             auto i_n = g.find_vertex(n);
+
+            // If the vertex on the other size of that edge is unexplored,
+            // explore it and add it to the queue
             if ((*i_n).second->get_label() == UNEXPLORED) {
                 (*i_n).second->set_label(VISITED);
                 p[n] = current;
                 q.push((*i_n).second->descriptor());
 
                 (*i_e).second->set_label(DISCOVERY);
+
+            // If it goes to an unexplored node, that's either
             } else if ((*i_n).second->descriptor() != current) {
-                (*i_e).second->set_label(CROSS); // Another node in same level
+                // Another node in same level, or
+                (*i_e).second->set_label(CROSS);
+
             } else if ((*i_n).second->descriptor() == current) {
-                (*i_e).second->set_label(CROSS); // Self-loop
+                // A self-loop
+                (*i_e).second->set_label(CROSS);
+
             }
         }
     }
@@ -81,72 +87,96 @@ template<typename Graph, typename ParentMap>
 void mst_prim_jarniks(const Graph& g, ParentMap& p);
 
 template<typename Graph, typename ParentMap>
-void mst_kruskals(const Graph& g, ParentMap& p)
-{
-// Initialization and setup //
-//////////////////////////////
-	std::multimap<size_t,typename Graph::edge_descriptor> m;
+void mst_kruskals(const Graph& g, ParentMap& p) {
+    // Initialization and setup //
+    //////////////////////////////
+    std::multimap<size_t,typename Graph::edge_descriptor> m;
 
-	for(auto i = g.edges.begin(); i != g.edges.end(); ++i)
-	{
-		m.insert(std::pair<size_t, typename Graph::edge_descriptor>(i->second->property(), i->first));		// inserts the edges into a map that sorts them in ascending order
-	}
-	auto e = m.end();
-	e--;
-	std::cout<<m.begin()->first<<std::endl;
-	std::cout<<e->first<<std::endl;
-	if (m.begin()->first == e->first)		// if only one edge is in the map, then all the edges have the same weight (and thus overwrote each other in the map)
-	{
-		std::cout<<"All edges have the same weight. Therefore, every spanning tree is a mininmum spanning tree.\n";
-		return;
-	}
-	typedef std::vector<typename Graph::vertex_descriptor> cluster;		// defines a cluster as a vector of vertex descriptors
+    for (auto i = g.edges.begin(); i != g.edges.end(); ++i) {
+        // insert the edges into a map that sorts them in ascending order
+        m.insert(std::pair<size_t,
+                 typename Graph::edge_descriptor>(i->second->property(),
+                 i->first));
+    }
 
-	std::vector<cluster> clusters(g.num_vertices());		// creates a cluster of clusters, (i.e., each vertex has its own vector, so more can be added during the merge process
-	std::vector<cluster*>cluster_map(g.num_vertices());		// creates a vector of pointers to each of the clusters
+    auto e = m.end();
+    --e;
+    std::cout << m.begin()->first << std::endl;
+    std::cout << e->first         << std::endl;
 
-	// assumes vertices are from [0,n-1]; if some have been deleted, this will not work
+    // if only one edge is in the map, then all the edges have the same weight
+    // (and thus overwrote each other in the map)
+    if (m.begin()->first == e->first) {
+        std::cout << "All edges have the same weight.";
+        std::cout << "Therefore, every spanning tree is a";
+        std::cout << "minimum spanning tree.\n";
+        return;
+    }
 
-	for(size_t i = 0; i < g.num_vertices(); ++i )			// for every vertex in g
-	{
-			clusters[i].push_back(i);			// add the vertex to its own cluster
-			cluster_map[i] = &clusters[i];			// set a pointer to that cluster
-	}
+    // defines a cluster as a vector of vertex descriptors
+    typedef std::vector<typename Graph::vertex_descriptor> cluster;
 
-// Creating the MST using Kruskal's Algorithm //
-////////////////////////////////////////////////
+    // creates a cluster of clusters, (i.e., each vertex has its own vector,
+    // so more can be added during the merge process)
+    std::vector<cluster> clusters(g.num_vertices());
 
-	while(p.size()<g.num_vertices()-1)
-	{
-		std::cout<<"Run "<<p.size()<<" of "<<g.num_vertices()-1<<".\n";
-		auto s = m.begin();
-		auto a = m.begin()->first;
-		std::pair<size_t,size_t> n = s->second;		// gets the edge to be checked
-		m.erase(a);
-		std::cout<<n.first<<" "<<n.second<<std::endl;
-		if(cluster_map[n.first] != cluster_map[n.second])	// checks if the vertices are in different clusters
-		{
-			p.insert(std::pair<size_t,size_t>(n.second, n.first));			// inserts the edge into the parent map
-			if((*cluster_map[n.first]).size() > (*cluster_map[n.second]).size())	// if the first cluster is larger than the second cluster
-			{
-				auto cl = cluster_map[n.second];
-				for(size_t i = 0; i < cl->size(); ++i)
-				{
-					(*cluster_map[n.first]).push_back((*cluster_map[n.second])[i]);	// takes an element from the smaller cluster, adds it to the larger one (needs cleaning up, probably)
-					cluster_map[n.second] = cluster_map[n.first];
-				}
-			}
-			else				// otherwise, use the other cluster
-			{
-				auto cl = cluster_map[n.first];
-				for(size_t i = 0; i < cl->size(); ++i)
-				{
-					(*cluster_map[n.second]).push_back((*cluster_map[n.first])[i]);	// takes an element from the smaller cluster, adds it to the larger one (needs cleaning up, probably)
-					cluster_map[n.first] = cluster_map[n.second];
-				}
-			}
-		}
-	}
+    // creates a vector of pointers to each of the clusters
+    std::vector<cluster*> cluster_map(g.num_vertices());
+
+    // assumes vertices are from [0,n-1]; if some have been deleted,
+    // this will not work
+
+    // for every vertex in g
+    for (size_t i = 0; i < g.num_vertices(); ++i ) {
+        // add the vertex to its own cluster
+        clusters[i].push_back(i);
+        // set a pointer to that cluster
+        cluster_map[i] = &clusters[i];
+    }
+
+    // Creating the MST using Kruskal's Algorithm //
+    ////////////////////////////////////////////////
+
+    while (p.size() < g.num_vertices() - 1) {
+        std::cout << "Run " << p.size() << " of " << g.num_vertices() - 1;
+        std::cout << std::endl;
+
+        auto s = m.begin();
+        auto a = m.begin()->first;
+
+        // gets the edge to be checked
+        std::pair<size_t,size_t> n = s->second;
+        m.erase(a);
+        std::cout << n.first << ' ' << n.second << std::endl;
+
+        // checks if the vertices are in different clusters
+        if (cluster_map[n.first] != cluster_map[n.second]) {
+            // inserts the edge into the parent map
+            p.insert(std::pair<size_t,size_t>(n.second, n.first));
+
+            // if the first cluster is larger than the second cluster
+            if ((*cluster_map[n.first]).size() > (*cluster_map[n.second]).size()) {
+                auto cl = cluster_map[n.second];
+                for (size_t i = 0; i < cl->size(); ++i) {
+                    // takes an element from the smaller cluster,
+                    // adds it to the larger one (needs cleaning up, probably)
+                    (*cluster_map[n.first]).push_back((*cluster_map[n.second])[i]);
+                    cluster_map[n.second] = cluster_map[n.first];
+                }
+            }
+
+            // otherwise, use the other cluster
+            else {
+                auto cl = cluster_map[n.first];
+                for (size_t i = 0; i < cl->size(); ++i) {
+                    // takes an element from the smaller cluster,
+                    // adds it to the larger one (needs cleaning up, probably)
+                    (*cluster_map[n.second]).push_back((*cluster_map[n.first])[i]);
+                    cluster_map[n.first] = cluster_map[n.second];
+                }
+            }
+        }
+    }
 
 }
 

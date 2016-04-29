@@ -14,22 +14,18 @@ int main() {
 
     // Create a graph.
     graph<int, double> g;
-    // g.insert_vertex(5);
-    // g.insert_vertex(4);
-    // g.insert_edge(0, 1, 0.5);
-    //  g.insert_edge(1, 0, 0.25);
 
     // testing input stream
     ifstream is{"football.g"};
-    is>>g;
+    is >> g;
 
     t.stop();
     cout << "Creating the graph took " << t.elapsed() / 1e6 << " ms" << endl;
     t.restart();
 
-
     cout << "Number of vertices: " << g.num_vertices() << endl;
     cout<< "Number of edges: " << g.num_edges() << endl;
+
     // Exercise iterators and accessors.
     /* for(auto vi = g.vertices_begin(); vi != g.vertices_end(); ++vi)
         cout << (*vi).second->descriptor() << " " << (*vi).second->property() << endl;
@@ -114,9 +110,10 @@ int main() {
 
    graph<int, double> k;
    ifstream reader{"test.g"};
-   reader>>k;
-   std::cout<<"Got to Kruskal's. Using input from test.g.\n";
+   reader >> k;
+
+   std::cout << "Got to Kruskal's. Using input from test.g.\n";
    multimap<size_t,size_t> m;
    mst_kruskals(g,m);
-   std::cout<<"Finished Kruskal's.\n";
+   std::cout << "Finished Kruskal's.\n";
 }
