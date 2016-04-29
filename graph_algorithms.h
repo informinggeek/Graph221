@@ -31,13 +31,13 @@ enum Label {UNEXPLORED, VISITED, DISCOVERY, CROSS, BACK};
 template<typename Graph, typename ParentMap>
 void breadth_first_search(const Graph& g,
     const typename Graph::vertex_descriptor vd, ParentMap& p) {
-    for (auto vertex = g.vertices_cbegin(); vertex != g.vertices_cend(); ++vertex) {
-        (*vertex).second->set_label(UNEXPLORED);
-    }
+    // for (auto vertex = g.vertices_cbegin(); vertex != g.vertices_cend(); ++vertex) {
+    //     (*vertex).second->set_label(UNEXPLORED);
+    // }
 
-    for (auto edge = g.edges_cbegin(); edge != g.edges_cend(); ++edge) {
-        (*edge).second->set_label(UNEXPLORED);
-    }
+    // for (auto edge = g.edges_cbegin(); edge != g.edges_cend(); ++edge) {
+    //     (*edge).second->set_label(UNEXPLORED);
+    // }
 
     std::queue<typename Graph::vertex_descriptor> q;
 
@@ -62,7 +62,9 @@ void breadth_first_search(const Graph& g,
 
                 (*i_e).second->set_label(DISCOVERY);
             } else if ((*i_n).second->descriptor() != current) {
-                (*i_e).second->set_label(CROSS);
+                (*i_e).second->set_label(CROSS); // Another node in same level
+            } else if ((*i_n).second->descriptor() == current) {
+                (*i_e).second->set_label(CROSS); // Self-loop
             }
         }
     }
@@ -83,7 +85,7 @@ void mst_kruskals(const Graph& g, ParentMap& p)
 {
 // Initialization and setup //
 //////////////////////////////
-	std::multimap<size_t,typename Graph::edge_descriptor> m; 
+	std::multimap<size_t,typename Graph::edge_descriptor> m;
 
 	for(auto i = g.edges.begin(); i != g.edges.end(); ++i)
 	{
