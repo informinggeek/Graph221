@@ -71,7 +71,7 @@ int main() {
    ifstream reader{"test.g"};
    reader>>k;
    std::cout<<"Got to Kruskal's. Using input from test.g.\n";
-   map<size_t,size_t> m;
-   mst_kruskals(k,m);
+   multimap<size_t,size_t> m;
+   mst_kruskals(g,m);
    std::cout<<"Finished Kruskal's.\n";
 }

@@ -58,13 +58,17 @@ void mst_kruskals(const Graph& g, ParentMap& p)
 {
 // Initialization and setup //
 //////////////////////////////
-	std::map<size_t,typename Graph::edge_descriptor> m; 
+	std::multimap<size_t,typename Graph::edge_descriptor> m; 
 
 	for(auto i = g.edges.begin(); i != g.edges.end(); ++i)
 	{
 		m.insert(std::pair<size_t, typename Graph::edge_descriptor>(i->second->property(), i->first));		// inserts the edges into a map that sorts them in ascending order
 	}
-	if (m.size() != g.edges.size())		// if only one edge is in the map, then all the edges have the same weight (and thus overwrote each other in the map)
+	auto e = m.end();
+	e--;
+	std::cout<<m.begin()->first<<std::endl;
+	std::cout<<e->first<<std::endl;
+	if (m.begin()->first == e->first)		// if only one edge is in the map, then all the edges have the same weight (and thus overwrote each other in the map)
 	{
 		std::cout<<"All edges have the same weight. Therefore, every spanning tree is a mininmum spanning tree.\n";
 		return;
@@ -87,13 +91,15 @@ void mst_kruskals(const Graph& g, ParentMap& p)
 
 	while(p.size()<g.num_vertices()-1)
 	{
+		std::cout<<"Run "<<p.size()<<" of "<<g.num_vertices()-1<<".\n";
 		auto s = m.begin();
 		auto a = m.begin()->first;
 		std::pair<size_t,size_t> n = s->second;		// gets the edge to be checked
 		m.erase(a);
+		std::cout<<n.first<<" "<<n.second<<std::endl;
 		if(cluster_map[n.first] != cluster_map[n.second])	// checks if the vertices are in different clusters
 		{
-			p[n.second] = n.first;			// inserts the edge into the parent map
+			p.insert(std::pair<size_t,size_t>(n.second, n.first));			// inserts the edge into the parent map
 			if((*cluster_map[n.first]).size() > (*cluster_map[n.second]).size())	// if the first cluster is larger than the second cluster
 			{
 				auto cl = cluster_map[n.second];
