@@ -2,7 +2,8 @@
 
 \usepackage{
 	geometry,
-	multicol
+	multicol,
+	pdfpages
 }
 
 \geometry{
@@ -30,6 +31,7 @@
 }
 
 \begin{document}
+	\includepdf[pages={-}]{./coverpage.pdf}
 	\maketitle
 	\begin{multicols}{2}
 		\section{Introduction}
