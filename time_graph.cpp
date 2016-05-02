@@ -13,8 +13,8 @@
 
 
 using namespace std;
-
 // Create a complete graph of size n.
+void initialize_complete_graph(graph<int, double>& g, size_t n) {
     // Add vertices.
     for(size_t i = 0; i < n; ++i)
         g.insert_vertex(i);
@@ -22,8 +22,8 @@ using namespace std;
     // Add edges.
     for(auto vi1 = g.vertices_cbegin(); vi1 != g.vertices_cend(); ++vi1)
         for(auto vi2 = g.vertices_cbegin(); vi2 != g.vertices_cend(); ++vi2)
-            if((*vi1)->descriptor() != (*vi2)->descriptor())
-                g.insert_edge((*vi1)->descriptor(), (*vi2)->descriptor(),
+            if(vi1->second->descriptor() != vi2->second->descriptor())
+                g.insert_edge(vi1->second->descriptor(), vi2->second->descriptor(),
                         double(rand()) / RAND_MAX);
 }
 
@@ -102,13 +102,13 @@ void time_graph(Initializer i, size_t n) {
     double sum = 0;
     for(size_t i = 0; i < g.num_edges() / 2; ++i) {
         if(rand()%2)
-            sum += (*g.find_vertex(rand() % g.num_vertices()))->property();
+            sum += (g.find_vertex(rand() % g.num_vertices()))->second->property();
         else {
             graph_id::edge_descriptor ed =
                 make_pair(rand() % g.num_vertices(), rand() % g.num_vertices());
             graph_id::edge_iterator ei = g.find_edge(ed);
             if(ei != g.edges_end())
-                sum += (*ei)->property();
+                sum += ei->second->property();
         }
     }
 
@@ -124,7 +124,7 @@ void time_graph(Initializer i, size_t n) {
                     make_pair(rand() % g.num_vertices(), rand() % g.num_vertices())
                     );
             if(ei != g.edges_end())
-                g.erase_edge((*ei)->descriptor());
+                g.erase_edge(ei->second->descriptor());
             else
                 --i;
     }
@@ -132,7 +132,7 @@ void time_graph(Initializer i, size_t n) {
     for(size_t i = 0; i < quarter_nodes; ++i) {
             graph_id::vertex_iterator vi = g.find_vertex(rand() % g.num_vertices());
             if(vi != g.vertices_end())
-                g.erase_vertex((*vi)->descriptor());
+                g.erase_vertex(vi->second->descriptor());
             else
                 --i;
     }
@@ -145,58 +145,7 @@ void time_graph(Initializer i, size_t n) {
 
     parent_map.clear();
     breadth_first_search(g, parent_map);
-
-  double sum = 0;
-  for(size_t i = 0; i < g.num_edges() / 2; ++i) {
-    if(rand()%2)
-      sum += (*g.find_vertex(rand() % g.num_vertices()))->property();
-    else {
-      graph_id::edge_descriptor ed =
-        make_pair(rand() % g.num_vertices(), rand() % g.num_vertices());
-      graph_id::edge_iterator ei = g.find_edge(ed);
-      if(ei != g.edges_end())
-        sum += (*ei)->property();
-    }
-  }
-
-  t.stop();
-  cout << "\tFind: " << t.elapsed() / 1e6 << " ms" << endl;
-  t.restart();
-
-  // Test erase operations.
-
-  size_t quarter_edge = g.num_edges() / 4;
-  for(size_t i = 0; i < quarter_edge; ++i) {
-      graph_id::edge_iterator ei = g.find_edge(
-          make_pair(rand() % g.num_vertices(), rand() % g.num_vertices())
-          );
-      if(ei != g.edges_end())
-        g.erase_edge((*ei)->descriptor());
-      else
-        --i;
-  }
-  size_t quarter_nodes = g.num_vertices() / 4;
-  for(size_t i = 0; i < quarter_nodes; ++i) {
-      graph_id::vertex_iterator vi = g.find_vertex(rand() % g.num_vertices());
-      if(vi != g.vertices_end())
-        g.erase_vertex((*vi)->descriptor());
-      else
-        --i;
-  }
-
-  t.stop();
-  cout << "\tErase: " << t.elapsed() / 1e6 << " ms" << endl;
-  t.restart();
-
-  // Run BFS again on smaller graph.
-
-  parent_map.clear();
-  breadth_first_search(g,g[0], parent_map);
-
-  t.stop();
-  cout << "\tBFS2: " << t.elapsed() / 1e6 << " ms" << endl;
 }
-
 /// @brief Control timing of a single function
 /// @tparam Func Function type
 /// @param f Function taking a single size_t parameter
@@ -218,7 +167,7 @@ void time_function(Func f, size_t graph_size, string name) {
     time_graph(f, graph_size);
 
     // calculate time
-    t.stop()
+    t.stop();
     cout << "test took " << t.elapsed() / 1e6 << " ms" << endl << endl;
 }
 
