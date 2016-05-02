@@ -74,7 +74,9 @@ class graph {
     ///@todo Define constructor/destructor
     graph() {}
 
-    ~graph() = default;
+    ~graph() {
+        clear();
+    }
 
     graph(const graph&) = delete;             ///< Copy is disabled.
     graph& operator=(const graph&) = delete;  ///< Copy is disabled.

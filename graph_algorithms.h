@@ -29,9 +29,27 @@ enum Label {UNEXPLORED, VISITED, DISCOVERY, CROSS, BACK};
 
 ///@todo Implement breadth-first search.
 template<typename Graph, typename ParentMap>
-void breadth_first_search(const Graph& g,
-                          const typename Graph::vertex_descriptor vd,
-                          ParentMap& p) {
+void breadth_first_search(Graph& g, ParentMap& p) {
+
+    for (auto v = g.vertices_begin(); v != g.vertices_end(); ++v) {
+        (*v).second->set_label(UNEXPLORED);
+    }
+
+    for (auto e = g.edges_begin(); e != g.edges_end(); ++e) {
+        (*e).second->set_label(UNEXPLORED);
+    }
+
+    for (auto v = g.vertices_begin(); v != g.vertices_end(); ++v) {
+        if ((*v).second->get_label() == UNEXPLORED) {
+            BFS(g, (*v).second->descriptor(), p);
+        }
+    }
+}
+
+template<typename Graph, typename ParentMap>
+void BFS(const Graph& g,
+         const typename Graph::vertex_descriptor vd,
+         ParentMap& p) {
 
     std::queue<typename Graph::vertex_descriptor> q;
     typename Graph::vertex_descriptor current = vd;

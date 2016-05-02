@@ -63,18 +63,8 @@ int main() {
     graph<int, double>::vertex_descriptor vd(1);
 
     cout << "Starting BFS" << endl;
-    for (auto v = g.vertices_begin(); v != g.vertices_end(); ++v) {
-        (*v).second->set_label(UNEXPLORED);
-    }
-    for (auto e = g.edges_begin(); e != g.edges_end(); ++e) {
-        (*e).second->set_label(UNEXPLORED);
-    }
+    breadth_first_search(g, p);
 
-    for (auto v = g.vertices_begin(); v != g.vertices_end(); ++v) {
-        if ((*v).second->get_label() == UNEXPLORED) {
-            breadth_first_search(g, (*v).second->descriptor(), p);
-        }
-    }
 
     bool success = true;
     for (auto v = g.vertices_begin(); v != g.vertices_end(); ++v) {
