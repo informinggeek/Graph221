@@ -4,7 +4,7 @@ WARN = -Wall -Werror
 DEPS = -MMD -MF $*.d
 INCL =
 
-OBJS = test_graph.o
+OBJS = test_graph.o time_graph.o
 
 default: $(OBJS)
 

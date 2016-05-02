@@ -23,8 +23,8 @@ void initialize_complete_graph(graph<int, double>& g, size_t n) {
   // Add edges.
   for(auto vi1 = g.vertices_cbegin(); vi1 != g.vertices_cend(); ++vi1)
     for(auto vi2 = g.vertices_cbegin(); vi2 != g.vertices_cend(); ++vi2)
-      if((*vi1)->descriptor() != (*vi2)->descriptor())
-        g.insert_edge((*vi1)->descriptor(), (*vi2)->descriptor(),
+      if(vi1->second->descriptor() != vi2->second->descriptor())
+        g.insert_edge(vi1->second->descriptor(), vi2->second->descriptor(),
             double(rand()) / RAND_MAX);
 }
 
@@ -146,7 +146,7 @@ void time_graph(Initializer i, size_t n) {
   // Run BFS again on smaller graph.
 
   parent_map.clear();
-  breadth_first_search(g, parent_map);
+  breadth_first_search(g,g[0], parent_map);
 
   t.stop();
   cout << "\tBFS2: " << t.elapsed() / 1e6 << " ms" << endl;
