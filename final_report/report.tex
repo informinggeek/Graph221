@@ -85,7 +85,7 @@
                 Mesh:       & $2^{13}$ \\
                 Random:     & $2^{12}$ \\
                 \end{tabular}
-        \section{Results and Discussion}
+        \section{Results}
             In each figure, the x axis is $\log_2$ (input size), and the y axis is time in ms.
             \subsection{Complete Graph}
                 \begin{Figure}
@@ -93,15 +93,11 @@
                     \includegraphics[width=3in]{complete}
                 \end{Figure}
 
-
-
                 \subsection{Mesh Graph}
                 \begin{Figure}
                     \centering
                     \includegraphics[width=3in]{mesh}
                 \end{Figure}
-
-
 
                 \subsection{Random Graph}
                 \begin{Figure}
@@ -135,5 +131,6 @@
                     Corder: & BFS
                 \end{tabular}
         \section{Conclusion}
+            Looking at the figures, we see results consistent with our theoretical analysis. Our algorithms take much longer on the complete graph, because their time complexities are dependent on the number of edges, which is $\mathcal{O}(n^2)$ in a fully-connected graph.
     \end{multicols*}
 \end{document}
