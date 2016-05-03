@@ -4,7 +4,8 @@
     geometry,
     multicol,
     pdfpages,
-    amssymb
+    amssymb,
+    graphicx
 }
 
 \geometry{
@@ -12,7 +13,13 @@
     margin=1in
 }
 
+\graphicspath{ {images/} }
+
 \setlength{\columnsep}{0.25in}
+
+\newenvironment{Figure}
+  {\par\medskip\noindent\minipage{\linewidth}}
+  {\endminipage\par\medskip}
 
 \title{
     \textbf{
@@ -58,20 +65,12 @@
 			\subsection{Input/Output}
                         The input and output both will run in $\mathcal{O}(n+m)$ time, because every vertex and every edge will have to be inserted into their respective containers, and if each individual process takes $\mathcal{O}(1)$ time, if there are n vertices and m edges then the total time will be $\mathcal{O}(n+m)$.
 			\subsection{Breadth-First Search}
-                        Breadth-First Search runs in $\mathcal{O}(n+m)$ time, because each vertex and edge is visited exactly twice: once to set it to 'UNEXPLORED', and once to set it a vertex to 'VISITED' and an edge to either 'DISCOVERY' or 'CROSS'. If there are n vertices and m edges, then the total time would be $\mathcal{O}(2(n+m))$, or just $\mathcal{O}(n+m)$.
+                        Breadth-First Search runs in $\mathcal{O}(n+m)$ time, because each vertex and edge is visited exactly twice: once to set it to UNEXPLORED, and once to set it a vertex to VISITED and an edge to either DISCOVERY or CROSS. If there are n vertices and m edges, then the total time would be $\mathcal{O}(2(n+m))$, or just $\mathcal{O}(n+m)$.
 	               \subsection{Kruskal's Algorithm}
                 Kruskal's Algorithm should run in $\mathcal{O}((n+m)\log{n})$ time, because each vertex will be merged at most $\log{n}$ times, resulting in $\mathcal{O}(n\log{n})$ time, because smaller clusters are always merged into larger clusters, and there will be at most $m$ removals from the edge multimap (because there are $m$ edges in total), resulting in $\mathcal{O}(m\log{n})$ time, because each union operation on the edge's vertices takes $\mathcal{O}(\log{n})$ time. Therefore, the total running time of Kruskal's Algorithm is $\mathcal{O}((n+m)\log{n})$ time.
         \section{Experimental Analysis}
             \subsection{Testing Hardware}
-                Specifications of Nathan's system, used for testing Kruskal's Algorithm: \\ \\
-                \begin{tabular}{r l}
-                CPU:    & Intel i5-2430M @ 2.40GHz \\
-                RAM:    & 8GB \\
-                OS:     & Linux Mint 17.3 Cinnamon \\
-                Kernel: & 3.19.0-32 \\
-                \end{tabular} \\ \\ \\
-                \noindent
-                Specifications of Corder's system, used for testing BFS: \\ \\
+                Specifications of Corder's system, used for testing: \\ \\
                 \begin{tabular}{r l}
                 CPU:    & Intel i5-4210U @ 2.7GHz \\
                 RAM:    & 8GB \\
@@ -79,16 +78,37 @@
                 Kernel: & 4.5.1-1 \\
                 \end{tabular} \\ \\
             \subsection{Testing Procedure}
-                Input Size: \\ \\
+                Testing was performed with the provided timing file. There were three rounds of testing, and for each round, a different type of graph was considered: a fully-connected graph, a mesh or grid graph, and a random graph. Each round started with a small graph ($2^2$ or $2^4$, in the case of the mesh graph), and doubled in size for each consecutive test, up until the tests took a prohibitively long time to run on our hardware. Each size graph was tested 20 times, and the results were averaged. \\ \\
+                Max Input Size: \\ \\
                 \begin{tabular}{r l}
                 Complete:   & $2^{11}$ \\
-                Mesh:       & $2^{15}$ \\
-                Random:     & $2^{14}$ \\
+                Mesh:       & $2^{13}$ \\
+                Random:     & $2^{12}$ \\
                 \end{tabular}
-
-            \subsection{Results}
-            \subsection{Big-O Constants}
         \section{Results and Discussion}
+            In each figure, the x axis is $\log_2$ (input size), and the y axis is time in ms.
+            \subsection{Complete Graph}
+                \begin{Figure}
+                    \centering
+                    \includegraphics[width=3in]{complete}
+                \end{Figure}
+
+
+
+                \subsection{Mesh Graph}
+                \begin{Figure}
+                    \centering
+                    \includegraphics[width=3in]{mesh}
+                \end{Figure}
+
+
+
+                \subsection{Random Graph}
+                \begin{Figure}
+                    \centering
+                    \includegraphics[width=3in]{random}
+                \end{Figure}
+
         \section{Team Contributions}
             \subsection{Graph}
                 \begin{tabular}{l l}
