@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <string>
 #include <utility>
+#include <fstream>
 
 #include "graph.h"
 #include "graph_algorithms.h"
@@ -13,6 +14,9 @@
 
 
 using namespace std;
+
+ofstream os{"Data.txt"};
+
 // Create a complete graph of size n.
 void initialize_complete_graph(graph<int, double>& g, size_t n) {
     // Add vertices.
@@ -82,9 +86,9 @@ void time_graph(Initializer i, size_t n) {
     typedef graph<int, double> graph_id;
     graph_id g;
     i(g, n);
-
     t.stop();
     cout << "\tCreate: " << t.elapsed() / 1e6 << " ms" << endl;
+    os << "\tCreate: " << t.elapsed() / 1e6 << " ms" << endl;
     t.restart();
 
     // Test BFS.
@@ -95,8 +99,18 @@ void time_graph(Initializer i, size_t n) {
 
     t.stop();
     cout << "\tBFS: " << t.elapsed() / 1e6 << " ms" << endl;
+    os << "\tBFS: " << t.elapsed() / 1e6 << " ms" << endl;
     t.restart();
 
+    // Test Kruskal's algorithm.
+
+    parent_map.clear();
+    mst_kruskals(g,parent_map);
+  
+    t.stop();
+    cout <<"\tKruskal's: " << t.elapsed() / 1e6 << " ms" << endl;
+    os <<"\tKruskal's: " << t.elapsed() / 1e6 << " ms" << endl;
+    t.restart();
     // Test find operations.
 
     double sum = 0;
@@ -114,6 +128,7 @@ void time_graph(Initializer i, size_t n) {
 
     t.stop();
     cout << "\tFind: " << t.elapsed() / 1e6 << " ms" << endl;
+    os << "\tFind: " << t.elapsed() / 1e6 << " ms" << endl;
     t.restart();
 
     // Test erase operations.
@@ -139,12 +154,10 @@ void time_graph(Initializer i, size_t n) {
 
     t.stop();
     cout << "\tErase: " << t.elapsed() / 1e6 << " ms" << endl;
+    os << "\tErase: " << t.elapsed() / 1e6 << " ms" << endl;
     t.restart();
 
-    // Run BFS again on smaller graph.
-
-    parent_map.clear();
-    breadth_first_search(g, parent_map);
+  
 }
 /// @brief Control timing of a single function
 /// @tparam Func Function type
@@ -159,16 +172,16 @@ void time_graph(Initializer i, size_t n) {
 template<typename Func>
 void time_function(Func f, size_t graph_size, string name) {
     cout << "Testing " << name << " graph..." << endl;
-
+    os << "Testing " << name << " graph..." << endl;
     // create a clock
     timer t;
     t.start();
-
     time_graph(f, graph_size);
 
     // calculate time
     t.stop();
     cout << "test took " << t.elapsed() / 1e6 << " ms" << endl << endl;
+    os << "test took " << t.elapsed() / 1e6 << " ms" << endl << endl;
 }
 
 

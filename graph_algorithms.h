@@ -122,7 +122,6 @@ void mst_kruskals(const Graph& g, ParentMap& p) {
 
     // if the first edge weight equals the last edge weight, then
     // all the edges have the same weight
-    // (and thus overwrote each other in the map)
     if (m.begin()->first == e->first) {
         return;
     }
