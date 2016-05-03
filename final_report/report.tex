@@ -42,25 +42,20 @@
 			\subsection{Input/Output}
                 The graph pulls its initial vertices and edges from a file, reading in first the number of vertices, then the number of edges. It then reads in the next $n$ lines, where $n$ is the number of vertices, and initializes them as vertices in the vertex container. The graph then reads in the remaining lines as edges, with each line having three values, in the order of source vertex, destination vertex, and weight.
 			\subsection{Breadth-First Search}
-
+                        Breadth-First Search begins by setting every edge and vertex to a 'UNDISCOVERED' label. This means the search has not yet found the edge or vertex. Next, the algorithm takes the first vertex in the graph's vertex map and adds it to the parent map. It then checks each edge of the node, and if a give edge is 'UNEXPLORED', then the algorithm checks the vertex at the other end of the edge. If the vertex is also 'UNEXPLORED', then the vertex is set to be 'VISITED', the edge is set to a 'DISCOVERY' edge, and the vertex is added to the parent map. If the vertex is already 'VISITED', then it will either be on the same 'level' as the current vertex, and the edge between the vertices will be set to 'CROSS', or it is a self-loop, and the edge will again be set to 'CROSS'. This process continues until all the vertices are added into the parent map.
 			\subsection{Kruskal's Algorithm}
                          Kruskal's Algorithm was used to find the minimum spanning tree of the input graph. The edges in the minimum spanning tree were copied into a parent map. To start, the algorithm read all the edges in the graph into a multimap, keying the edges by weight. Next, the first and last keys in the multimap are checked; if they are the same, then every edge in the map must have the same weight; therefore, every spanning tree is a minimum spanning tree. If not, the algorithm continues and sets up containers known as clusters; these represent the vertices linked together by Krusr ekal's algorithm that will form the minimum spanning tree. Another container that holds pointers to each cluster is initialized for constant access to each cluster. Every vertex is then inserted into its own cluster, and the algorithm begins to iterate through every edge in the multimap, comparing the vertices it connects; if they are not in the same cluster, that edge is added to the parent map, and the smaller cluster is merged into the larger cluster, though the now empty smaller cluster is not deleted; doing so would reindex the remaining clusters, invalidating all of the pointers to the clusters. This process repeats until there are n-1 edges in the parent map, with n being the number of vertices in the graph.
 		\section{Theoretical Analysis}
 			\subsection{Graph}
+                        Inserting an edge or vertex takes O(1) time, because the elements are simply added to their respective maps. Erasing an edge also takes O(1) time, because each edge contains the descriptors to its two vertices that can immediately access the vetices' adjacency lists. Removing a vertex takes O(m+deg(v)) time, because every edge connected to that vertex must be deleted, as well as deleting the edge from the master edge list.
 			\subsection{Input/Output}
+                        The input and output both will run in O(n+m) time, because every vertex and every edge will have to be inserted into their respective containers, and if each individual process takes O(1) time, if there are n vertices and m edges then the total time will be O(n+m).
 			\subsection{Breadth-First Search}
-			\subsection{Minimum Spanning Tree} 
+                        Breadth-First Search runs in O(n+m) time, because each vertex and edge is visited exactly twice: once to set it to 'UNEXPLORED', and once to set it a vertex to 'VISITED' and an edge to either 'DISCOVERY' or 'CROSS'. If there are n vertices and m edges, then the total time would be O(2(n+m)), or just O(n+m).
 			\subsection{Kruskal's Algorithm}
                          Kruskal's Algorithm should run in O((n+m)logn) time, because each vertex will be merged at most log(n) times, resulting in O(nlogn) time, because smaller clusters are always merged into larger clusters, and there will be at most m removals from the edge multimap (because there are m edges in total), resulting in O(mlogn) time, because each union operation on the edge's vertices takes O(logn) time. Therefore, the total running time of Kruskao's Algorithm is O((n+m)logn) time.
 		\section{Experimental Analysis}
 			\subsection{Testing Hardware}
-                        Kruskal's Algorithm:
-                          OS: Linux Mint 17.3 Cinnamon  64-bit
-                          Kernel: 3.19.0-32-generic
-                          Processor: Intel Core i5-2430M CPU @ 2.40 GHz x 2
-                          Memory: 7.7 GB
-                        Input Size:
-                          2^(11) for complete, 2^(15) for mesh, 2^(14) for random
 			\subsection{Results}
 			\subsection{Big-O Constants}
 		\section{Results and Discussion}
