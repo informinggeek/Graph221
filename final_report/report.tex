@@ -33,7 +33,7 @@
 \begin{document}
 	\includepdf[pages={-}]{./coverpage.pdf}
 	\maketitle
-	\begin{multicols}{2}
+	\begin{multicols*}{2}
 		\section{Introduction}
             For this project, we implemented a fully-functional graph data structure, along with breadth-first search and Kruskal's minimum spanning tree algrorithms.
 		\section{Implementation Details}
@@ -49,23 +49,40 @@
 			\subsection{Graph}
 			\subsection{Input/Output}
 			\subsection{Breadth-First Search}
-			\subsection{Minimum Spanning Tree} 
+			\subsection{Minimum Spanning Tree}
 			\subsection{Kruskal's Algorithm}
                          Kruskal's Algorithm should run in O((n+m)logn) time, because each vertex will be merged at most log(n) times, resulting in O(nlogn) time, because smaller clusters are always merged into larger clusters, and there will be at most m removals from the edge multimap (because there are m edges in total), resulting in O(mlogn) time, because each union operation on the edge's vertices takes O(logn) time. Therefore, the total running time of Kruskao's Algorithm is O((n+m)logn) time.
 		\section{Experimental Analysis}
 			\subsection{Testing Hardware}
-                        Kruskal's Algorithm:
-                          OS: Linux Mint 17.3 Cinnamon  64-bit
-                          Kernel: 3.19.0-32-generic
-                          Processor: Intel Core i5-2430M CPU @ 2.40 GHz x 2
-                          Memory: 7.7 GB
-                        Input Size:
-                          2^(11) for complete, 2^(15) for mesh, 2^(14) for random
+				Specifications of Nathan's system, used for testing Kruskal's Algorithm: \\ \\
+				\begin{tabular}{r l}
+				CPU:    & Intel i5-2430M @ 2.40GHz \\
+				RAM:    & 8GB \\
+				OS:     & Linux Mint 17.3 Cinnamon \\
+				Kernel: & 3.19.0-32 \\
+				\end{tabular} \\ \\
+				\noindent
+				Specifications of Corder's system, used for testing DFS: \\ \\
+				\begin{tabular}{r l}
+				CPU:    & Intel i5-4210U @ 2.7GHz \\
+				RAM:    & 8GB \\
+				OS:     & Arch Linux \\
+				Kernel: & 4.5.1-1 \\
+				\end{tabular} \\ \\
+
+			\subsection{Testing Procedure}
+				Input Size: \\ \\
+				\begin{tabular}{r l}
+				Complete 	& $2^{11}$ \\
+				Mesh 		& $2^{15}$ \\
+				Random 		& $2^{14}$ \\
+				\end{tabular}
+
 			\subsection{Results}
 			\subsection{Big-O Constants}
 		\section{Results and Discussion}
 		\section{Team Contributions}
                 Nathan was responsible for implementing the iterator operations, the insertion operations for vertex and edge, and the input operation, as well as Kruskal's Algorithm.
 		\section{Conclusion}
-	\end{multicols}
+	\end{multicols*}
 \end{document}
